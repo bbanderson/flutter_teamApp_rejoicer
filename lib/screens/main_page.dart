@@ -22,6 +22,8 @@ class MainPage extends StatefulWidget {
 class _MainPageState extends State<MainPage> {
 
   Color _color = Colors.orange[200];
+  Color _appBarColor = Colors.amber;
+  Text _appBarText = Text('Home');
 
   int _selectedIndex = 1;
 
@@ -52,7 +54,9 @@ class _MainPageState extends State<MainPage> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text(widget.email),
+        centerTitle: true,
+        backgroundColor: _appBarColor,
+        title: _appBarText,
         actions: <Widget>[
           // IconButton(
           //   icon: Icon(Icons.shopping_cart),
@@ -123,7 +127,9 @@ class _MainPageState extends State<MainPage> {
               // child: Text('Toast')
               onTap: () {
                 setState(() {
-                  _color = Color.fromRGBO(255, 102, 102, 1);
+                  _color = Colors.amber;
+                  _appBarColor = Colors.amber;
+                  _appBarText = Text('Home');
                 });
                 Navigator.of(context).pop();
 //                toastIsAuth();
@@ -141,7 +147,10 @@ class _MainPageState extends State<MainPage> {
               title: Text('Leaders\' 한마디'),
               onTap: () {
                 setState(() {
-                  _color = Color.fromRGBO(255, 133, 51, 1);
+                  //255, 133, 51, 1
+                  _color = Color.fromRGBO(255, 102, 102, 1);
+                  _appBarColor = Color.fromRGBO(255, 102, 102, 1);
+                  _appBarText = Text('Leaders\' 한마디');
                 });
                 Navigator.of(context).pop();
                 print('Notice Button is clicked.');
@@ -156,7 +165,9 @@ class _MainPageState extends State<MainPage> {
               title: Text('기도제목'),
               onTap: () {
                 setState(() {
-                  _color = Color.fromRGBO(255, 255, 77, 1);
+                  _color = Colors.yellow;
+                  _appBarColor = Colors.yellow;
+                  _appBarText = Text('기도제목');
                 });
                 Navigator.of(context).pop();
                 print('Pray Button is clicked.');
@@ -171,7 +182,9 @@ class _MainPageState extends State<MainPage> {
               title: Text('콘티'),
               onTap: () {
                 setState(() {
-                  _color = Color.fromRGBO(77, 255, 77, 1);
+                  _color = Colors.green;
+                  _appBarColor = Colors.green;
+                  _appBarText = Text('콘티');
                 });
                 Navigator.of(context).pop();
                 print('Conti Button is clicked.');
@@ -187,6 +200,8 @@ class _MainPageState extends State<MainPage> {
               onTap: () {
                 setState(() {
                   _color = Color.fromRGBO(77, 166, 255, 1);
+                  _appBarColor = Color.fromRGBO(77, 166, 255, 1);
+                  _appBarText = Text('참고영상');
                 });
                 Navigator.of(context).pop();
                 print('Video Button is clicked.');
@@ -202,6 +217,8 @@ class _MainPageState extends State<MainPage> {
               onTap: () {
                 setState(() {
                   _color = Color.fromRGBO(77, 77, 255, 1);
+                  _appBarColor = Color.fromRGBO(77, 77, 255, 1);
+                  _appBarText = Text('악보');
                 });
                 Navigator.of(context).pop();
                 print('Score Button is clicked.');
@@ -217,17 +234,23 @@ class _MainPageState extends State<MainPage> {
               onTap: () {
                 setState(() {
                   _color = Color.fromRGBO(166, 77, 255, 1);
+                  _appBarColor = Color.fromRGBO(166, 77, 255, 1);
+                  _appBarText = Text('채널표');
                 });
                 Navigator.of(context).pop();
                 print('ChannelTable Button is clicked.');
               }
             ),
+            SizedBox(height: 10,),
+            SizedBox(height: 1, child: Container(color: Colors.grey,),),
+            SizedBox(height: 10,),
             ListTile(
-            leading: Icon(
+            contentPadding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+            trailing: Icon(
             Icons.exit_to_app,
             color: Colors.grey[850],
             ),
-            title: Text('Log Out'),
+            title: Text('Log Out', textAlign: TextAlign.end,),
             onTap: () {
               //    Navigator.push(context, MaterialPageRoute(builder: (context)=>MainPage(email: user.email)));
               FirebaseAuth.instance.signOut();
