@@ -99,7 +99,8 @@ class _MainPageState extends State<MainPage> {
                 setState(() {
                   _color = Color.fromRGBO(255, 102, 102, 1);
                 });
-                toastIsAuth();
+                Navigator.of(context).pop();
+//                toastIsAuth();
               },
               // onTap: () {
               //   print('Home Button is clicked.');
@@ -116,6 +117,7 @@ class _MainPageState extends State<MainPage> {
                 setState(() {
                   _color = Color.fromRGBO(255, 133, 51, 1);
                 });
+                Navigator.of(context).pop();
                 print('Notice Button is clicked.');
               },
               // trailing: Icon(Icons.add),
@@ -130,6 +132,7 @@ class _MainPageState extends State<MainPage> {
                 setState(() {
                   _color = Color.fromRGBO(255, 255, 77, 1);
                 });
+                Navigator.of(context).pop();
                 print('Pray Button is clicked.');
               },
               // trailing: Icon(Icons.add),
@@ -144,6 +147,7 @@ class _MainPageState extends State<MainPage> {
                 setState(() {
                   _color = Color.fromRGBO(77, 255, 77, 1);
                 });
+                Navigator.of(context).pop();
                 print('Conti Button is clicked.');
               },
               // trailing: Icon(Icons.add),
@@ -158,6 +162,7 @@ class _MainPageState extends State<MainPage> {
                 setState(() {
                   _color = Color.fromRGBO(77, 166, 255, 1);
                 });
+                Navigator.of(context).pop();
                 print('Video Button is clicked.');
               },
               // trailing: Icon(Icons.add),
@@ -172,6 +177,7 @@ class _MainPageState extends State<MainPage> {
                 setState(() {
                   _color = Color.fromRGBO(77, 77, 255, 1);
                 });
+                Navigator.of(context).pop();
                 print('Score Button is clicked.');
               },
               // trailing: Icon(Icons.add),
@@ -186,6 +192,7 @@ class _MainPageState extends State<MainPage> {
                 setState(() {
                   _color = Color.fromRGBO(166, 77, 255, 1);
                 });
+                Navigator.of(context).pop();
                 print('ChannelTable Button is clicked.');
               }
             ),
