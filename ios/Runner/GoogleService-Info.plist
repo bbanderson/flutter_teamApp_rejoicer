@@ -29,7 +29,7 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:784501334725:ios:d19a57b9d3e5270a4c46ac</string>
+	<string>1:784501334725:ios:05c6babea35d16554c46ac</string>
 	<key>DATABASE_URL</key>
 	<string>https://rejoicer-auth.firebaseio.com</string>
 </dict>
