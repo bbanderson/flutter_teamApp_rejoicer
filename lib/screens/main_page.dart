@@ -19,6 +19,9 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
+
+  Color _color = Colors.orange[200];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -77,7 +80,7 @@ class _MainPageState extends State<MainPage> {
                 print('Detail description is opened.');
               },
               decoration: BoxDecoration(
-                color: Colors.orange[200],
+                color: _color,
                 borderRadius: BorderRadius.only(
                   bottomLeft: Radius.circular(40.0),
                   bottomRight: Radius.circular(40.0),
@@ -93,6 +96,9 @@ class _MainPageState extends State<MainPage> {
               title: Text('Home'),
               // child: Text('Toast')
               onTap: () {
+                setState(() {
+                  _color = Color.fromRGBO(255, 102, 102, 1);
+                });
                 toastIsAuth();
               },
               // onTap: () {
@@ -107,6 +113,9 @@ class _MainPageState extends State<MainPage> {
               ),
               title: Text('Leaders\' 한마디'),
               onTap: () {
+                setState(() {
+                  _color = Color.fromRGBO(255, 133, 51, 1);
+                });
                 print('Notice Button is clicked.');
               },
               // trailing: Icon(Icons.add),
@@ -118,6 +127,9 @@ class _MainPageState extends State<MainPage> {
               ),
               title: Text('기도제목'),
               onTap: () {
+                setState(() {
+                  _color = Color.fromRGBO(255, 255, 77, 1);
+                });
                 print('Pray Button is clicked.');
               },
               // trailing: Icon(Icons.add),
@@ -129,6 +141,9 @@ class _MainPageState extends State<MainPage> {
               ),
               title: Text('콘티'),
               onTap: () {
+                setState(() {
+                  _color = Color.fromRGBO(77, 255, 77, 1);
+                });
                 print('Conti Button is clicked.');
               },
               // trailing: Icon(Icons.add),
@@ -140,6 +155,9 @@ class _MainPageState extends State<MainPage> {
               ),
               title: Text('참고영상'),
               onTap: () {
+                setState(() {
+                  _color = Color.fromRGBO(77, 166, 255, 1);
+                });
                 print('Video Button is clicked.');
               },
               // trailing: Icon(Icons.add),
@@ -151,6 +169,9 @@ class _MainPageState extends State<MainPage> {
               ),
               title: Text('악보'),
               onTap: () {
+                setState(() {
+                  _color = Color.fromRGBO(77, 77, 255, 1);
+                });
                 print('Score Button is clicked.');
               },
               // trailing: Icon(Icons.add),
@@ -162,6 +183,9 @@ class _MainPageState extends State<MainPage> {
               ),
               title: Text('채널표'),
               onTap: () {
+                setState(() {
+                  _color = Color.fromRGBO(166, 77, 255, 1);
+                });
                 print('ChannelTable Button is clicked.');
               }
             ),
