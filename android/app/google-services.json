@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "784501334725",
+    "firebase_url": "https://rejoicer-auth.firebaseio.com",
+    "project_id": "rejoicer-auth",
+    "storage_bucket": "rejoicer-auth.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:784501334725:android:c64536366e2c9a684c46ac",
+        "android_client_info": {
+          "package_name": "com.bbanslearn.firebase_auth_login_youtube"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "784501334725-f51tk9ak84l33dkigvbaadmbn8nb2s9r.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBJFaeaAYjAwUNpDwE_0mKZCVWDsR-lLdE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "784501334725-f51tk9ak84l33dkigvbaadmbn8nb2s9r.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
