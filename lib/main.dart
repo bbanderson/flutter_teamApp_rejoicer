@@ -4,6 +4,7 @@ import 'package:firebase_auth_login_youtube/screens/login.dart';
 import 'package:firebase_auth_login_youtube/screens/main_page.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'screens/socket/socket_chat.dart';
 
 void main() => runApp(MyApp());
 
