@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_auth_login_youtube/screens/login.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:firebase_auth_login_youtube/main.dart';
@@ -22,9 +23,34 @@ class _MainPageState extends State<MainPage> {
 
   Color _color = Colors.orange[200];
 
+  int _selectedIndex = 1;
+
+  static List<Widget> _widgetOptions = <Widget>[
+//    Container(
+//      color: Colors.redAccent,
+//    ),
+//    Container(
+//      color: Colors.greenAccent,
+//    ),
+//    Container(
+//      color: Colors.blueAccent,
+//    ),
+      Center(child: Text('Pneuma Live', textScaleFactor: 3,)),
+      Center(child: Text('지금 여의도 날씨는?', textScaleFactor: 3,)),
+      Center(child: Text('Chat', textScaleFactor: 3,)),
+
+  ];
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         title: Text(widget.email),
         actions: <Widget>[
@@ -214,7 +240,42 @@ class _MainPageState extends State<MainPage> {
           ],
         ),
       ),
-//      body:
+
+
+      body: IndexedStack(
+        index: _selectedIndex,
+          children: _widgetOptions,
+      ),
+
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => _onItemTapped(1),
+        child: Icon(Icons.brightness_high),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      bottomNavigationBar: BottomAppBar(
+        shape: CircularNotchedRectangle(),
+        notchMargin: 6,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          mainAxisSize: MainAxisSize.max,
+          children: <Widget>[
+            IconButton(
+                icon: Icon(Icons.live_tv),
+                onPressed: () => _onItemTapped(0),
+
+            ),
+//            IconButton(
+//                icon: Icon(Icons.brightness_high),
+//                onPressed: () => _onItemTapped(1),
+//            ),
+            IconButton(
+                icon: Icon(Icons.chat),
+                onPressed: () => _onItemTapped(2),
+            ),
+
+          ],
+        ),
+      ),
 //      Center(
 //        child: FlatButton(onPressed: () {
 //          FirebaseAuth.instance.signOut();
@@ -224,6 +285,22 @@ class _MainPageState extends State<MainPage> {
 //            child: Text("Log Out"))
     );
 
+  }
+
+  BottomNavigationBar mainPageButtonNavigationBar() {
+    return BottomNavigationBar(
+      type: BottomNavigationBarType.shifting,
+      unselectedItemColor: Colors.black,
+      selectedItemColor: Colors.amber,
+      onTap: _onItemTapped,
+      currentIndex: _selectedIndex,
+      items: <BottomNavigationBarItem>[
+        BottomNavigationBarItem(icon: Icon(Icons.live_tv), title: Text('LIVE')),
+        BottomNavigationBarItem(icon: Icon(Icons.brightness_high), title: Text('WEATHER')),
+        BottomNavigationBarItem(icon: Icon(Icons.chat), title: Text('CHAT')),
+
+      ],
+    );
   }
 }
 
