@@ -1,8 +1,13 @@
+import 'dart:ui';
+
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_auth_login_youtube/screens/login.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:firebase_auth_login_youtube/main.dart';
+import '../data/users_id.dart';
 
-class MainPage extends StatelessWidget {
+class MainPage extends StatefulWidget {
 
   // MainPage 생성 시 email 을 받아오도록 한다.
   MainPage({this.email});
@@ -10,11 +15,15 @@ class MainPage extends StatelessWidget {
   final String email;
 
   @override
+  _MainPageState createState() => _MainPageState();
+}
+
+class _MainPageState extends State<MainPage> {
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-
-        title: Text(email),
+        title: Text(widget.email),
         actions: <Widget>[
           // IconButton(
           //   icon: Icon(Icons.shopping_cart),
@@ -63,7 +72,7 @@ class MainPage extends StatelessWidget {
                 '변현홍',
                 style: TextStyle(fontFamily: 'qiannian'),
               ),
-              accountEmail: Text(email),
+              accountEmail: Text(widget.email),
               onDetailsPressed: () {
                 print('Detail description is opened.');
               },
@@ -163,8 +172,9 @@ class MainPage extends StatelessWidget {
             ),
             title: Text('Log Out'),
             onTap: () {
+              //    Navigator.push(context, MaterialPageRoute(builder: (context)=>MainPage(email: user.email)));
               FirebaseAuth.instance.signOut();
-            print('ChannelTable Button is clicked.');
+            print('Log out.');
             },
 
 
@@ -173,15 +183,16 @@ class MainPage extends StatelessWidget {
           ],
         ),
       ),
-      body:
-      Center(
-        child: FlatButton(onPressed: () {
-          FirebaseAuth.instance.signOut();
-
-        },
-
-            child: Text("Log Out"))),
+//      body:
+//      Center(
+//        child: FlatButton(onPressed: () {
+//          FirebaseAuth.instance.signOut();
+//
+//        },
+//
+//            child: Text("Log Out"))
     );
+
   }
 }
 

@@ -10,6 +10,7 @@ class _ForgetPwState extends State<ForgetPw> {
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _idController = TextEditingController();
+  final managerEmail = 'tombyun@naver.com';
 
   @override
   Widget build(BuildContext context) {
@@ -17,35 +18,49 @@ class _ForgetPwState extends State<ForgetPw> {
       appBar: AppBar(
         title: Text('비밀번호 찾기'),
       ),
-      body: Form(
-        key: _formKey,
-        child: Column(
-          children: <Widget>[
-            TextFormField(
-              controller: _idController,
-              decoration: InputDecoration(
-                icon: Icon(Icons.account_circle),
-                labelText: '이름',
-                hintText: '자신의 실명을 입력해주세요!',
-              ),
-              validator: (String value) {
-                if(value.isEmpty) {
-                  return "Rejoicer가 아닌 것 같아요!";
-                }
-                return null;
-              },
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Card(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(16),
             ),
-            FlatButton(onPressed: () async {
-              await FirebaseAuth.instance.sendPasswordResetEmail(email: _idController.text);
-              final snackBar = SnackBar(
-                content: Text('이메일로 전송되었습니다.'),
-              );
-              Scaffold.of(_formKey.currentContext).showSnackBar(snackBar);
-            }, child: Text(
-                'Reset Password'),
-            )
-          ],
-        ),
+            elevation: 10.0,
+            child: Padding(
+              padding: const EdgeInsets.only(
+                left: 12.0,
+                right: 12.0,
+                top: 12.0,
+                bottom: 32.0,
+              ),
+              child: Form(
+                  key: _formKey,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text('비밀번호를 잊어버리셨다면, 운영자에게 비밀번호 초기화 요청을 할 수 있습니다.\n'
+                            +managerEmail+'로 문의해주세요.'),
+
+                      ],
+                    ),
+                  )
+              ),
+            ),
+          ),
+//
+//          FlatButton(onPressed: () async {
+//            await FirebaseAuth.instance.sendPasswordResetEmail(email: _idController.text);
+//            print(_idController.text);
+//            final snackBar = SnackBar(
+//              content: Text('운영자 이메일로 전송되었습니다.'),
+//            );
+//            Scaffold.of(_formKey.currentContext).showSnackBar(snackBar);
+//          }, child: Text(
+//              'Reset Password'),
+//          )
+        ],
       ),
     );
   }

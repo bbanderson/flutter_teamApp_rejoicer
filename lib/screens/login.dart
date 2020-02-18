@@ -24,7 +24,10 @@ class AuthPage extends StatelessWidget {
 
     return Scaffold(
         appBar: AppBar(
-          title: Text('Rejoicer'),
+          centerTitle: true,
+          title: Text('Rejoicer',
+          style: TextStyle(letterSpacing: 3),
+          textAlign: TextAlign.center,),
         ),
       body:
 
@@ -63,22 +66,10 @@ class AuthPage extends StatelessWidget {
                   ],
                 ),
             Container(height: size.height * 0.1,),
-                Consumer<GuestOrRejoicer>(
-                  builder: (BuildContext context, guestOrRejoicer, Widget child) => GestureDetector(
-                      onTap: () {
-                        guestOrRejoicer.toggle();
-                      },
-                      child: Text(guestOrRejoicer.isRejoicer?'계정이 없으시면 Leader에게 문의하세요!\nGuest로 들어가시겠어요?':'Guest 모드입니다.\nRejoicer로 들어가시겠어요?',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                            color: guestOrRejoicer.isRejoicer?Colors.red:Colors.blue,),
-                      )
-                  ),
-                ),
+
+                _bottomBar(size),
 
                 Container(height: size.height * 0.05,),
-
               ],
             ),
           ]
@@ -114,6 +105,25 @@ class AuthPage extends StatelessWidget {
 //    Navigator.push(context, MaterialPageRoute(builder: (context)=>MainPage(email: user.email)));
   }
 
+  Widget _bottomBar(Size size) {
+    return BottomAppBar(
+        elevation: 0.0,
+        child: Consumer<GuestOrRejoicer>(
+          builder: (BuildContext context, guestOrRejoicer, Widget child) => GestureDetector(
+              onTap: () {
+                guestOrRejoicer.toggle();
+              },
+              child: Text(guestOrRejoicer.isRejoicer?'계정이 없으시면 Leader에게 문의하세요!\nGuest로 들어가시겠어요?':'Guest 모드입니다.\nRejoicer로 들어가시겠어요?',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: guestOrRejoicer.isRejoicer?Colors.red:Colors.blue,),
+              )
+          ),
+        ),
+      );
+  }
+  
   
   Widget _inputForm(Size size) {
     return Padding(

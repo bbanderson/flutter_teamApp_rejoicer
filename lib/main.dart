@@ -35,6 +35,7 @@ class Splash extends StatelessWidget {
               value: GuestOrRejoicer(),
               child: AuthPage());
         } else {
+//          String realName = snapshot.data.email.toString();
           return MainPage(email: snapshot.data.email);
         }
       }
