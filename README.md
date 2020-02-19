@@ -1,6 +1,5 @@
-# Flutter with Firebase_auth_login_
-
-Flutter login ex.
+# Dart Flutter with Firebase
+## Dev App Project for Team Managing
 
 ## Getting Started
 
