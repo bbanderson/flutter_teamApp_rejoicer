@@ -18,7 +18,6 @@ class MainPage extends StatefulWidget {
 
   static BuildContext get context => null;
 
-
   @override
   _MainPageState createState() => _MainPageState();
 
@@ -32,6 +31,11 @@ class _MainPageState extends State<MainPage> {
 //  Text _sliverTitle = Text('오늘의 여의도 날씨는?');
 
   int _selectedIndex = 1;
+
+
+  int duration = 2;
+  Widget currentWidget = progress;
+  bool isProgressed = true;
 
   // bottonNav 누를 때 변경 사항 저장하기 -> live, weather, chat Page
   static List<Widget> _widgetOptions = <Widget>[
@@ -278,7 +282,14 @@ class _MainPageState extends State<MainPage> {
         myCustomScrollView(),
 
       floatingActionButton: FloatingActionButton(
-        onPressed: () => _onItemTapped(1),
+        onPressed: () {
+          _onItemTapped(1);
+          setState(() {
+            isProgressed = !isProgressed;
+            currentWidget = isProgressed?progress:layout;
+          });
+          },
+
         child: Icon(Icons.brightness_high),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
@@ -336,6 +347,7 @@ class _MainPageState extends State<MainPage> {
               title: Text('오늘의 여의도 날씨는'),
             ),
           ),
+
           SliverList(
             delegate: SliverChildListDelegate(
               [
@@ -350,6 +362,20 @@ class _MainPageState extends State<MainPage> {
 //            child: SocketChat(),
                     ),
                   ],
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(30),
+                  child: (
+                    AnimatedSwitcher(
+                      duration: Duration(seconds: duration),
+                      child: currentWidget,
+                      transitionBuilder: (Widget child, Animation<double> animation) {
+                        return ScaleTransition(scale: animation, child: child,);
+                      },
+                      switchInCurve: Cubic(0.22, 0.0, 1.0, 1.0),
+                      switchOutCurve: Cubic(0.0, 0.0, 0.28, 1.0),
+                    )
+                  ),
                 ),
                 Container(color: Colors.red, height: 250,),
                 Container(color: Colors.green, height: 250,),
@@ -389,3 +415,29 @@ void toastIsAuth() {
       toastLength: Toast.LENGTH_SHORT);
 }
 
+Widget progress = Container(
+  key: ValueKey(0),
+  color: Colors.amber[50],
+  child: ListTile(
+    leading: CircularProgressIndicator(
+      valueColor: AlwaysStoppedAnimation<Color>(Colors.redAccent),
+    ),
+    title: Text('잠시만 기다려주세요'),
+    subtitle: Text('loading...'),
+  ),);
+
+Widget layout = Container(
+  key: ValueKey(1),
+  color: Colors.blue[50],
+  child: SizedBox(height: 40,),);
+
+//Widget layout = Container(
+//  key: ValueKey(1),
+//  color: Colors.blue[50],
+//  child: ListTile(
+//    leading: CircularProgressIndicator(
+//      valueColor: AlwaysStoppedAnimation<Color>(Colors.blueAccent),
+//    ),
+//    title: Text('잠시만 기다려주세요'),
+//    subtitle: Text('loading...'),
+//  ),);
