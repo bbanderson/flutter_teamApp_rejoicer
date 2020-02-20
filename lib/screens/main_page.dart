@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_auth_login_youtube/screens/login.dart';
+import 'package:firebase_auth_login_youtube/screens/socket/socket_chat.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -15,8 +16,12 @@ class MainPage extends StatefulWidget {
 
   final String email;
 
+  static BuildContext get context => null;
+
+
   @override
   _MainPageState createState() => _MainPageState();
+
 }
 
 class _MainPageState extends State<MainPage> {
@@ -24,9 +29,11 @@ class _MainPageState extends State<MainPage> {
   Color _color = Colors.orange[200];
   Color _appBarColor = Colors.amber;
   Text _appBarText = Text('Home');
+//  Text _sliverTitle = Text('오늘의 여의도 날씨는?');
 
   int _selectedIndex = 1;
 
+  // bottonNav 누를 때 변경 사항 저장하기 -> live, weather, chat Page
   static List<Widget> _widgetOptions = <Widget>[
 //    Container(
 //      color: Colors.redAccent,
@@ -37,9 +44,9 @@ class _MainPageState extends State<MainPage> {
 //    Container(
 //      color: Colors.blueAccent,
 //    ),
-      Center(child: Text('Pneuma Live', textScaleFactor: 3,)),
-      Center(child: Text('지금 여의도 날씨는?', textScaleFactor: 3,)),
-      Center(child: Text('Chat', textScaleFactor: 3,)),
+      Center(child: Text('Pneuma Live', textScaleFactor: 2,)),
+      Center(child: Text('날씨 API', textScaleFactor: 2,)),
+      Center(child: Text('Chat', textScaleFactor: 2,)),
 
   ];
 
@@ -51,6 +58,8 @@ class _MainPageState extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) {
+    final Size size = MediaQuery.of(context).size;
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -265,10 +274,8 @@ class _MainPageState extends State<MainPage> {
       ),
 
 
-      body: IndexedStack(
-        index: _selectedIndex,
-          children: _widgetOptions,
-      ),
+      body:
+        myCustomScrollView(),
 
       floatingActionButton: FloatingActionButton(
         onPressed: () => _onItemTapped(1),
@@ -293,7 +300,10 @@ class _MainPageState extends State<MainPage> {
 //            ),
             IconButton(
                 icon: Icon(Icons.chat),
-                onPressed: () => _onItemTapped(2),
+                onPressed: () {
+                  _onItemTapped(2);
+//                  return SocketChat();
+                },
             ),
 
           ],
@@ -306,8 +316,50 @@ class _MainPageState extends State<MainPage> {
 //        },
 //
 //            child: Text("Log Out"))
+
     );
 
+  }
+
+  CustomScrollView myCustomScrollView() {
+    return CustomScrollView(
+        slivers: <Widget>[
+          SliverAppBar(
+            automaticallyImplyLeading: false,
+            floating: true,
+            pinned: true,
+            snap: false,
+            backgroundColor: Colors.white,
+            expandedHeight: 200.0,
+            centerTitle: true,
+            flexibleSpace: FlexibleSpaceBar(
+              title: Text('오늘의 여의도 날씨는'),
+            ),
+          ),
+          SliverList(
+            delegate: SliverChildListDelegate(
+              [
+                Column(
+                  children: <Widget>[
+                    IndexedStack(
+                      index: _selectedIndex,
+                      children: _widgetOptions,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+//            child: SocketChat(),
+                    ),
+                  ],
+                ),
+                Container(color: Colors.red, height: 250,),
+                Container(color: Colors.green, height: 250,),
+                Container(color: Colors.blue, height: 250,),
+                Container(color: Colors.black, height: 250,),
+              ],
+            ),
+          ),
+        ],
+      );
   }
 
   BottomNavigationBar mainPageButtonNavigationBar() {
@@ -336,3 +388,4 @@ void toastIsAuth() {
       textColor: Colors.white,
       toastLength: Toast.LENGTH_SHORT);
 }
+

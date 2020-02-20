@@ -23,6 +23,7 @@ class AuthPage extends StatelessWidget {
     final Size size = MediaQuery.of(context).size;
 
     return Scaffold(
+      backgroundColor: Colors.amber,
         appBar: AppBar(
           centerTitle: true,
           title: Text('Rejoicer',
@@ -30,12 +31,16 @@ class AuthPage extends StatelessWidget {
           textAlign: TextAlign.center,),
         ),
       body:
+      myOriginalLoginStack(size),
+    );
+  }
 
-      Stack(
-          children: <Widget>[
-            CircleAvatar(
-              child: FadeInImage.assetNetwork(placeholder: 'assets/loading.gif', image: 'assets/login_bg.gif')
-    ),
+  Stack myOriginalLoginStack(Size size) {
+    return Stack(
+        children: <Widget>[
+          CircleAvatar(
+            child: FadeInImage.assetNetwork(placeholder: 'assets/loading.gif', image: 'assets/login_bg.gif')
+  ),
 
 //            SizedBox(height: 10, width: 10,),
 
@@ -43,37 +48,36 @@ class AuthPage extends StatelessWidget {
 
 
 
-            ListView(
+          ListView(
 //              mainAxisAlignment: MainAxisAlignment.end,
-              children: <Widget>[
-                ChewieListItem(
-                  videoPlayerController: VideoPlayerController.asset(
-                      'videos/Prologue_Timelapse.mp4'),
-                  looping: true,
-                ),
+            children: <Widget>[
+              ChewieListItem(
+                videoPlayerController: VideoPlayerController.asset(
+                    'videos/Prologue_Timelapse.mp4'),
+                looping: true,
+              ),
 
 //                _logoImg,
-                  Stack(
-                  alignment: Alignment.centerLeft,
-                  children: <Widget>[
+                Stack(
+                alignment: Alignment.centerLeft,
+                children: <Widget>[
 //                    CustomPaint(
 //                      size: size,
 //                      painter: LoginBackground(isRejoicer: Provider.of<GuestOrRejoicer>(context).isRejoicer),
 //                    ),
-                    _inputForm(size),
-                    _loginButton(size),
+                  _inputForm(size),
+                  _loginButton(size),
 //                    Container(width: 100, height: 50, color: Colors.black,),
-                  ],
-                ),
-            Container(height: size.height * 0.1,),
+                ],
+              ),
+          Container(height: size.height * 0.1,),
 
-                _bottomBar(size),
+              _bottomBar(size),
 
-                Container(height: size.height * 0.05,),
-              ],
-            ),
-          ]
-      ),
+              Container(height: size.height * 0.05,),
+            ],
+          ),
+        ]
     );
   }
 
@@ -107,6 +111,7 @@ class AuthPage extends StatelessWidget {
 
   Widget _bottomBar(Size size) {
     return BottomAppBar(
+      color: Colors.amber,
         elevation: 0.0,
         child: Consumer<GuestOrRejoicer>(
           builder: (BuildContext context, guestOrRejoicer, Widget child) => GestureDetector(
