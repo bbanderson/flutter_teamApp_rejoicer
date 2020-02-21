@@ -1,4 +1,6 @@
 import 'dart:async';
+
+//import 'dart:html';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_auth_login_youtube/data/guest_or_rejoicer.dart';
 import 'package:firebase_auth_login_youtube/helper/login_background.dart';
@@ -7,58 +9,85 @@ import 'package:firebase_auth_login_youtube/screens/forget_pw.dart';
 import 'package:firebase_auth_login_youtube/screens/main_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/painting.dart';
 import 'package:flutter/widgets.dart';
 import 'package:video_player/video_player.dart';
 import 'package:provider/provider.dart';
 
 class AuthPage extends StatelessWidget {
-
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _idController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
+  final double _tvHeight = 0.3;
+
+  double makeTvHeight(size) {
+    return size * _tvHeight;
+  }
+
   @override
   Widget build(BuildContext context) {
-
     final Size size = MediaQuery.of(context).size;
 
     return Scaffold(
       backgroundColor: Colors.amber,
-        appBar: AppBar(
-          centerTitle: true,
-          title: Text('Rejoicer',
-          style: TextStyle(letterSpacing: 3),
-          textAlign: TextAlign.center,),
+      appBar: AppBar(
+        elevation: 0,
+        centerTitle: true,
+        title: Text(
+          '\nRejoicer\n',
+          maxLines: 2,
+//          textScaleFactor: 1,
+          style: TextStyle(letterSpacing: 5),
+          textAlign: TextAlign.center,
         ),
-      body:
-      myOriginalLoginStack(size),
+      ),
+      body: myOriginalLoginStack(size),
     );
   }
 
   Stack myOriginalLoginStack(Size size) {
-    return Stack(
-        children: <Widget>[
-          CircleAvatar(
-            child: FadeInImage.assetNetwork(placeholder: 'assets/loading.gif', image: 'assets/login_bg.gif')
-  ),
+    return Stack(children: <Widget>[
+//          CircleAvatar(
+//            child: FadeInImage.assetNetwork(placeholder: 'assets/loading.gif', image: 'assets/login_bg.gif')
+//  ),
 
-//            SizedBox(height: 10, width: 10,),
+      SizedBox(
+        height: 10,
+        width: 10,
+      ),
 
-
-
-
-
-          ListView(
+      Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Container(
+//            height: makeTvHeight(size.height),
+          child: ListView(
 //              mainAxisAlignment: MainAxisAlignment.end,
             children: <Widget>[
-              ChewieListItem(
-                videoPlayerController: VideoPlayerController.asset(
-                    'videos/Prologue_Timelapse.mp4'),
-                looping: true,
+              Container(
+                height: makeTvHeight(size.height),
+                child: Padding(
+                  padding: EdgeInsets.all(size.width * 0.01),
+                  child: Card(
+//                  color: Colors.pink,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Padding(
+                      padding: EdgeInsets.only(
+                          left: 20, right: 20, top: 10, bottom: 10),
+                      child: ChewieListItem(
+                        videoPlayerController: VideoPlayerController.asset(
+                            'videos/Prologue_Timelapse.mp4'),
+                        looping: true,
+                      ),
+                    ),
+                  ),
+                ),
               ),
 
 //                _logoImg,
-                Stack(
+              Stack(
                 alignment: Alignment.centerLeft,
                 children: <Widget>[
 //                    CustomPaint(
@@ -70,22 +99,25 @@ class AuthPage extends StatelessWidget {
 //                    Container(width: 100, height: 50, color: Colors.black,),
                 ],
               ),
-          Container(height: size.height * 0.1,),
+//          Container(height: size.height * 0.1,),
 
               _bottomBar(size),
 
-              Container(height: size.height * 0.05,),
+//              Container(height: size.height * 0.05,),
             ],
           ),
-        ]
-    );
+        ),
+      )
+    ]);
   }
 
   void _register(BuildContext context) async {
-    final AuthResult result = await FirebaseAuth.instance.createUserWithEmailAndPassword(email: _idController.text, password: _passwordController.text);
+    final AuthResult result = await FirebaseAuth.instance
+        .createUserWithEmailAndPassword(
+            email: _idController.text, password: _passwordController.text);
     final FirebaseUser user = result.user;
 
-    if(user == null) {
+    if (user == null) {
       final snackBar = SnackBar(
         content: Text('다시 시도해 주세요.'),
       );
@@ -96,10 +128,12 @@ class AuthPage extends StatelessWidget {
   }
 
   void _login(BuildContext context) async {
-    final AuthResult result = await FirebaseAuth.instance.signInWithEmailAndPassword(email: _idController.text, password: _passwordController.text);
+    final AuthResult result = await FirebaseAuth.instance
+        .signInWithEmailAndPassword(
+            email: _idController.text, password: _passwordController.text);
     final FirebaseUser user = result.user;
 
-    if(user == null) {
+    if (user == null) {
       final snackBar = SnackBar(
         content: Text('다시 시도해 주세요.'),
       );
@@ -110,26 +144,39 @@ class AuthPage extends StatelessWidget {
   }
 
   Widget _bottomBar(Size size) {
-    return BottomAppBar(
-      color: Colors.amber,
-        elevation: 0.0,
-        child: Consumer<GuestOrRejoicer>(
-          builder: (BuildContext context, guestOrRejoicer, Widget child) => GestureDetector(
-              onTap: () {
-                guestOrRejoicer.toggle();
-              },
-              child: Text(guestOrRejoicer.isRejoicer?'계정이 없으시면 Leader에게 문의하세요!\nGuest로 들어가시겠어요?':'Guest 모드입니다.\nRejoicer로 들어가시겠어요?',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: guestOrRejoicer.isRejoicer?Colors.red:Colors.blue,),
-              )
+    return Container(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisSize: MainAxisSize.max,
+        children: <Widget>[
+          RaisedButton(
+            disabledColor: Colors.grey[850],
+//        elevation: 0.0,
+            child: Consumer<GuestOrRejoicer>(
+              builder: (BuildContext context, guestOrRejoicer, Widget child) =>
+                  GestureDetector(
+                      onTap: () {
+                        guestOrRejoicer.toggle();
+                      },
+                      child: Text(
+                        guestOrRejoicer.isRejoicer
+                            ? '계정이 없으시면 Leader에게 문의하세요!\nGuest로 들어가시겠어요?'
+                            : 'Guest 모드입니다.\nRejoicer로 들어가시겠어요?',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: guestOrRejoicer.isRejoicer
+                              ? Colors.white
+                              : Colors.blue,
+                        ),
+                      )),
+            ),
           ),
-        ),
-      );
+        ],
+      ),
+    );
   }
-  
-  
+
   Widget _inputForm(Size size) {
     return Padding(
       padding: EdgeInsets.all(size.width * 0.05),
@@ -158,7 +205,7 @@ class AuthPage extends StatelessWidget {
                       hintText: '자신의 실명을 입력해주세요!',
                     ),
                     validator: (String value) {
-                      if(value.isEmpty) {
+                      if (value.isEmpty) {
                         return "Rejoicer가 아닌 것 같아요!";
                       }
                       return null;
@@ -173,29 +220,36 @@ class AuthPage extends StatelessWidget {
                       hintText: '비밀번호를 입력해주세요!',
                     ),
                     validator: (String value) {
-                      if(value.isEmpty) {
+                      if (value.isEmpty) {
                         return "비밀번호가 틀린 것 같아요!";
                       }
                       return null;
                     },
                   ),
-                  Container(height: 8,),
+                  Container(
+                    height: 8,
+                  ),
                   Consumer<GuestOrRejoicer>(
                     builder: (context, value, child) => Opacity(
-                      opacity: value.isRejoicer?1:0,
-                        child: GestureDetector(onTap: value.isRejoicer?(){goToForgetPw(context);}:null,child: Text('- 비밀번호를 잊으셨나요?'))
-                    ),
+                        opacity: value.isRejoicer ? 1 : 0,
+                        child: GestureDetector(
+                            onTap: value.isRejoicer
+                                ? () {
+                                    goToForgetPw(context);
+                                  }
+                                : null,
+                            child: Text('- 비밀번호를 잊으셨나요?'))),
                   ),
                 ],
-              )
-          ),
+              )),
         ),
       ),
     );
   }
 
-  goToForgetPw (BuildContext context) {
-    Navigator.push(context, MaterialPageRoute(builder: (context)=>ForgetPw()));
+  goToForgetPw(BuildContext context) {
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => ForgetPw()));
   }
 
   Widget _loginButton(Size size) {
@@ -205,33 +259,38 @@ class AuthPage extends StatelessWidget {
       bottom: 0,
       child: SizedBox(
         height: 50,
-
         child: Consumer<GuestOrRejoicer>(
           builder: (context, guestOrRejoicer, child) => RaisedButton(
-            child: Text(guestOrRejoicer.isRejoicer?'Let\'s get it!':'Guest로 로그인', style: TextStyle(fontSize: 20, color: Colors.black),),
-            color: guestOrRejoicer.isRejoicer?Colors.orange:Colors.blue,
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(25)),
+            child: Text(
+              guestOrRejoicer.isRejoicer ? 'Let\'s get it!' : 'Guest로 로그인',
+              style: TextStyle(fontSize: 20, color: Colors.black),
+            ),
+            color: guestOrRejoicer.isRejoicer ? Colors.orange : Colors.blue,
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
             onPressed: () {
               if (_formKey.currentState.validate()) {
-                guestOrRejoicer.isRejoicer?_login(context):null;
+                guestOrRejoicer.isRejoicer ? _login(context) : null;
 //                print(_idController.text.toString());
               }
-            },),
+            },
+          ),
         ),
       ),
     );
   }
 
   Widget get _logoImg => Expanded(
-      child: Padding(
-        padding: const EdgeInsets.only(top: 40, left: 24, right: 24),
-        child: FittedBox(
-          fit: BoxFit.contain,
-          child: CircleAvatar(
-            backgroundColor: Colors.amber,
-              child: FadeInImage.assetNetwork(placeholder: 'assets/loading.gif', image: 'assets/login_bg.gif')),
+        child: Padding(
+          padding: const EdgeInsets.only(top: 40, left: 24, right: 24),
+          child: FittedBox(
+            fit: BoxFit.contain,
+            child: CircleAvatar(
+                backgroundColor: Colors.amber,
+                child: FadeInImage.assetNetwork(
+                    placeholder: 'assets/loading.gif',
+                    image: 'assets/login_bg.gif')),
+          ),
         ),
-      ),
-    );
+      );
 }
