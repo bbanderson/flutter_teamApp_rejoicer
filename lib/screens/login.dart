@@ -69,7 +69,7 @@ class AuthPage extends StatelessWidget {
                 child: Padding(
                   padding: EdgeInsets.all(size.width * 0.01),
                   child: Card(
-//                  color: Colors.pink,
+                  color: Colors.black87,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(20),
                     ),
@@ -198,6 +198,7 @@ class AuthPage extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   TextFormField(
+                    keyboardType: TextInputType.emailAddress,
                     controller: _idController,
                     decoration: InputDecoration(
                       icon: Icon(Icons.account_circle),
@@ -212,6 +213,7 @@ class AuthPage extends StatelessWidget {
                     },
                   ),
                   TextFormField(
+                    keyboardType: TextInputType.visiblePassword,
                     obscureText: true,
                     controller: _passwordController,
                     decoration: InputDecoration(
