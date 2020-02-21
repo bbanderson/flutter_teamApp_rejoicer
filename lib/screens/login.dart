@@ -11,10 +11,18 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/widgets.dart';
+import 'package:kakao_flutter_sdk/all.dart';
 import 'package:video_player/video_player.dart';
 import 'package:provider/provider.dart';
+import 'package:kakao_flutter_sdk/kakao_flutter_sdk_plugin.dart';
+
+
+//KakaoContext.clientId = "${put your native app key here}";
+
 
 class AuthPage extends StatelessWidget {
+
+
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _idController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
@@ -143,40 +151,6 @@ class AuthPage extends StatelessWidget {
 //    Navigator.push(context, MaterialPageRoute(builder: (context)=>MainPage(email: user.email)));
   }
 
-  Widget _bottomBar(Size size) {
-    return Container(
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        mainAxisSize: MainAxisSize.max,
-        children: <Widget>[
-          RaisedButton(
-            disabledColor: Colors.grey[850],
-//        elevation: 0.0,
-            child: Consumer<GuestOrRejoicer>(
-              builder: (BuildContext context, guestOrRejoicer, Widget child) =>
-                  GestureDetector(
-                      onTap: () {
-                        guestOrRejoicer.toggle();
-                      },
-                      child: Text(
-                        guestOrRejoicer.isRejoicer
-                            ? '계정이 없으시면 Leader에게 문의하세요!\nGuest로 들어가시겠어요?'
-                            : 'Guest 모드입니다.\nRejoicer로 들어가시겠어요?',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: guestOrRejoicer.isRejoicer
-                              ? Colors.white
-                              : Colors.blue,
-                        ),
-                      )),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
   Widget _inputForm(Size size) {
     return Padding(
       padding: EdgeInsets.all(size.width * 0.05),
@@ -213,21 +187,21 @@ class AuthPage extends StatelessWidget {
                     },
                   ),
                   TextFormField(
-                    keyboardType: TextInputType.visiblePassword,
-                    obscureText: true,
-                    controller: _passwordController,
-                    decoration: InputDecoration(
-                      icon: Icon(Icons.vpn_key),
-                      labelText: '비밀번호',
-                      hintText: '비밀번호를 입력해주세요!',
+                      keyboardType: TextInputType.visiblePassword,
+                      obscureText: true,
+                      controller: _passwordController,
+                      decoration: InputDecoration(
+                        icon: Icon(Icons.vpn_key),
+                        labelText: '비밀번호',
+                        hintText: '비밀번호를 입력해주세요!',
+                      ),
+                      validator: (String value) {
+                        if (value.isEmpty) {
+                          return "비밀번호가 틀린 것 같아요!";
+                        }
+                        return null;
+                      },
                     ),
-                    validator: (String value) {
-                      if (value.isEmpty) {
-                        return "비밀번호가 틀린 것 같아요!";
-                      }
-                      return null;
-                    },
-                  ),
                   Container(
                     height: 8,
                   ),
@@ -249,10 +223,49 @@ class AuthPage extends StatelessWidget {
     );
   }
 
+
+  Widget _bottomBar(Size size) {
+    return Container(
+      margin: EdgeInsets.all(20),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisSize: MainAxisSize.max,
+        children: <Widget>[
+//          _kakaoLogin(),
+          RaisedButton(
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+            disabledColor: Colors.grey[850],
+//        elevation: 0.0,
+            child: Consumer<GuestOrRejoicer>(
+              builder: (BuildContext context, guestOrRejoicer, Widget child) =>
+                  GestureDetector(
+                      onTap: () {
+                        guestOrRejoicer.toggle();
+                      },
+                      child: Text(
+                        guestOrRejoicer.isRejoicer
+                            ? '계정이 없으시면 Leader에게 문의하세요!\nGuest로 들어가시겠어요?'
+                            : 'Guest 모드입니다.\nRejoicer로 들어가시겠어요?',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: guestOrRejoicer.isRejoicer
+                              ? Colors.white
+                              : Colors.blue,
+                        ),
+                      )),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   goToForgetPw(BuildContext context) {
     Navigator.push(
         context, MaterialPageRoute(builder: (context) => ForgetPw()));
   }
+
 
   Widget _loginButton(Size size) {
     return Positioned(
@@ -295,4 +308,32 @@ class AuthPage extends StatelessWidget {
           ),
         ),
       );
+
+
+//  Widget _kakaoLogin() {
+//    return RaisedButton(
+//      child: Text('Login with kakao'),
+//      onPressed: () {
+//        _loginWithKakao();
+//      },
+//    );
+//  }
 }
+
+//  void _loginWithKakao() async {
+//    try {
+//      String authCode = await AuthCodeClient.instance.request(); // via browser
+//      // String authCode = await AuthCodeClient.instance.requestWithTalk() // or with KakaoTalk
+//      AccessToken token = (await AuthApi.instance.issueAccessToken(authCode)) as AccessToken;
+//      AccessTokenStore.instance.toCache(token); // Store access token in AccessTokenStore for future API requests.
+//    } catch (e) {
+//      // some error happened during the course of user login... deal with it.
+//    }
+//
+//    String token = await AccessTokenStore.instance.fromCache();
+//    if (token.refreshToken == null) {
+//      Navigator.of(context).pushReplacementNamed('/login');
+//    } else {
+//      Navigator.of(context).pushReplacementNamed("/main");
+//    }
+//  }
