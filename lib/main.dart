@@ -4,7 +4,7 @@ import 'package:firebase_auth_login_youtube/screens/login.dart';
 import 'package:firebase_auth_login_youtube/screens/main_page.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:kakao_flutter_sdk/all.dart';
+//import 'package:kakao_flutter_sdk/all.dart';
 import 'screens/socket/socket_chat.dart';
 
 void main() => runApp(MyApp());
@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    KakaoContext.clientId = '9e7ef641a8dfd745d8098edab4a738e5';
+//    KakaoContext.clientId = '9e7ef641a8dfd745d8098edab4a738e5';
     return MaterialApp(
       title: 'Rejoicer',
       theme: ThemeData(

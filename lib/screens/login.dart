@@ -1,4 +1,5 @@
 import 'dart:async';
+//import 'dart:js';
 
 //import 'dart:html';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -11,19 +12,17 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/widgets.dart';
-import 'package:kakao_flutter_sdk/all.dart';
+
+//import 'package:kakao_flutter_sdk/all.dart';
 import 'package:video_player/video_player.dart';
 import 'package:provider/provider.dart';
-import 'package:kakao_flutter_sdk/kakao_flutter_sdk_plugin.dart';
-
+//import 'package:kakao_flutter_sdk/kakao_flutter_sdk_plugin.dart';
 
 //KakaoContext.clientId = "${put your native app key here}";
 
-
 class AuthPage extends StatelessWidget {
-
-
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _guestForm = GlobalKey<FormState>();
   final TextEditingController _idController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
@@ -35,7 +34,9 @@ class AuthPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Size size = MediaQuery.of(context).size;
+    final Size size = MediaQuery
+        .of(context)
+        .size;
 
     return Scaffold(
       backgroundColor: Colors.amber,
@@ -77,7 +78,7 @@ class AuthPage extends StatelessWidget {
                 child: Padding(
                   padding: EdgeInsets.all(size.width * 0.01),
                   child: Card(
-                  color: Colors.black87,
+                    color: Colors.black87,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(20),
                     ),
@@ -102,7 +103,50 @@ class AuthPage extends StatelessWidget {
 //                      size: size,
 //                      painter: LoginBackground(isRejoicer: Provider.of<GuestOrRejoicer>(context).isRejoicer),
 //                    ),
-                  _inputForm(size),
+                  Consumer<GuestOrRejoicer>(
+                    builder: (context, value, child) =>
+                    value.isRejoicer
+                        ? _inputForm(size)
+                        : Card(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      elevation: 10.0,
+                      child: Padding(
+                        padding: const EdgeInsets.only(
+                          left: 12.0,
+                          right: 12.0,
+                          top: 12.0,
+                          bottom: 32.0,
+                        ),
+                        child: Form(
+                            key: _guestForm,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Text(
+                                  'Guest 모드에서는 게시글 작성 등의 기능과 열람할 수 있는 정보가 제한됩니다.'
+                                  , textAlign: TextAlign.center),
+                                Container(
+                                  height: 8,
+                                ),
+                                Consumer<GuestOrRejoicer>(
+                                  builder: (context, value, child) =>
+                                      Opacity(
+                                          opacity: value.isRejoicer ? 1 : 0,
+                                          child: GestureDetector(
+                                              onTap: value.isRejoicer
+                                                  ? () {
+                                                goToForgetPw(context);
+                                              }
+                                                  : null,
+                                              child: Text('- 비밀번호를 잊으셨나요?'))),
+                                ),
+                              ],
+                            )),
+                      ),
+                    ),
+                  ),
                   _loginButton(size),
 //                    Container(width: 100, height: 50, color: Colors.black,),
                 ],
@@ -122,7 +166,7 @@ class AuthPage extends StatelessWidget {
   void _register(BuildContext context) async {
     final AuthResult result = await FirebaseAuth.instance
         .createUserWithEmailAndPassword(
-            email: _idController.text, password: _passwordController.text);
+        email: _idController.text, password: _passwordController.text);
     final FirebaseUser user = result.user;
 
     if (user == null) {
@@ -138,7 +182,7 @@ class AuthPage extends StatelessWidget {
   void _login(BuildContext context) async {
     final AuthResult result = await FirebaseAuth.instance
         .signInWithEmailAndPassword(
-            email: _idController.text, password: _passwordController.text);
+        email: _idController.text, password: _passwordController.text);
     final FirebaseUser user = result.user;
 
     if (user == null) {
@@ -187,34 +231,35 @@ class AuthPage extends StatelessWidget {
                     },
                   ),
                   TextFormField(
-                      keyboardType: TextInputType.visiblePassword,
-                      obscureText: true,
-                      controller: _passwordController,
-                      decoration: InputDecoration(
-                        icon: Icon(Icons.vpn_key),
-                        labelText: '비밀번호',
-                        hintText: '비밀번호를 입력해주세요!',
-                      ),
-                      validator: (String value) {
-                        if (value.isEmpty) {
-                          return "비밀번호가 틀린 것 같아요!";
-                        }
-                        return null;
-                      },
+                    keyboardType: TextInputType.visiblePassword,
+                    obscureText: true,
+                    controller: _passwordController,
+                    decoration: InputDecoration(
+                      icon: Icon(Icons.vpn_key),
+                      labelText: '비밀번호',
+                      hintText: '비밀번호를 입력해주세요!',
                     ),
+                    validator: (String value) {
+                      if (value.isEmpty) {
+                        return "비밀번호가 틀린 것 같아요!";
+                      }
+                      return null;
+                    },
+                  ),
                   Container(
                     height: 8,
                   ),
                   Consumer<GuestOrRejoicer>(
-                    builder: (context, value, child) => Opacity(
-                        opacity: value.isRejoicer ? 1 : 0,
-                        child: GestureDetector(
-                            onTap: value.isRejoicer
-                                ? () {
-                                    goToForgetPw(context);
-                                  }
-                                : null,
-                            child: Text('- 비밀번호를 잊으셨나요?'))),
+                    builder: (context, value, child) =>
+                        Opacity(
+                            opacity: value.isRejoicer ? 1 : 0,
+                            child: GestureDetector(
+                                onTap: value.isRejoicer
+                                    ? () {
+                                  goToForgetPw(context);
+                                }
+                                    : null,
+                                child: Text('- 비밀번호를 잊으셨나요?'))),
                   ),
                 ],
               )),
@@ -222,7 +267,6 @@ class AuthPage extends StatelessWidget {
       ),
     );
   }
-
 
   Widget _bottomBar(Size size) {
     return Container(
@@ -233,7 +277,8 @@ class AuthPage extends StatelessWidget {
         children: <Widget>[
 //          _kakaoLogin(),
           RaisedButton(
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+            shape:
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
             disabledColor: Colors.grey[850],
 //        elevation: 0.0,
             child: Consumer<GuestOrRejoicer>(
@@ -266,7 +311,6 @@ class AuthPage extends StatelessWidget {
         context, MaterialPageRoute(builder: (context) => ForgetPw()));
   }
 
-
   Widget _loginButton(Size size) {
     return Positioned(
       left: size.width * 0.15,
@@ -275,27 +319,29 @@ class AuthPage extends StatelessWidget {
       child: SizedBox(
         height: 50,
         child: Consumer<GuestOrRejoicer>(
-          builder: (context, guestOrRejoicer, child) => RaisedButton(
-            child: Text(
-              guestOrRejoicer.isRejoicer ? 'Let\'s get it!' : 'Guest로 로그인',
-              style: TextStyle(fontSize: 20, color: Colors.black),
-            ),
-            color: guestOrRejoicer.isRejoicer ? Colors.orange : Colors.blue,
-            shape:
+          builder: (context, guestOrRejoicer, child) =>
+              RaisedButton(
+                child: Text(
+                  guestOrRejoicer.isRejoicer ? 'Let\'s get it!' : 'Guest로 로그인',
+                  style: TextStyle(fontSize: 20, color: Colors.black),
+                ),
+                color: guestOrRejoicer.isRejoicer ? Colors.orange : Colors.blue,
+                shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
-            onPressed: () {
-              if (_formKey.currentState.validate()) {
-                guestOrRejoicer.isRejoicer ? _login(context) : null;
+                onPressed: () {
+                  if (_formKey.currentState.validate()) {
+                    guestOrRejoicer.isRejoicer ? _login(context) : null;
 //                print(_idController.text.toString());
-              }
-            },
-          ),
+                  }
+                },
+              ),
         ),
       ),
     );
   }
 
-  Widget get _logoImg => Expanded(
+  Widget get _logoImg =>
+      Expanded(
         child: Padding(
           padding: const EdgeInsets.only(top: 40, left: 24, right: 24),
           child: FittedBox(
@@ -308,7 +354,6 @@ class AuthPage extends StatelessWidget {
           ),
         ),
       );
-
 
 //  Widget _kakaoLogin() {
 //    return RaisedButton(
