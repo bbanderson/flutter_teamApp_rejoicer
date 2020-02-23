@@ -15,6 +15,7 @@ class _ForgetPwState extends State<ForgetPw> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.amber,
       appBar: AppBar(
         title: Text('비밀번호 찾기'),
       ),

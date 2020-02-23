@@ -220,8 +220,8 @@ class AuthPage extends StatelessWidget {
                     controller: _idController,
                     decoration: InputDecoration(
                       icon: Icon(Icons.account_circle),
-                      labelText: '이름',
-                      hintText: '자신의 실명을 입력해주세요!',
+                      labelText: '이메일',
+                      hintText: '실제 사용하시는 이메일을 입력해주세요!',
                     ),
                     validator: (String value) {
                       if (value.isEmpty) {

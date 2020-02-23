@@ -1,5 +1,4 @@
 import 'dart:ui';
-
 import 'package:english_words/english_words.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_auth_login_youtube/bloc/favoriteConti.dart';
@@ -8,6 +7,7 @@ import 'package:firebase_auth_login_youtube/bloc/random_list.dart';
 import 'package:firebase_auth_login_youtube/bloc/saved.dart';
 import 'package:firebase_auth_login_youtube/data/profileImage.dart';
 import 'package:firebase_auth_login_youtube/screens/login.dart';
+import 'package:firebase_auth_login_youtube/screens/mainPage_drawer_contents/channel.dart';
 import 'package:firebase_auth_login_youtube/screens/socket/socket_chat.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -274,10 +274,11 @@ class _MainPageState extends State<MainPage> {
                 ),
                 title: Text('채널표'),
                 onTap: () {
-                  setState(() {
+                  setState(() async {
                     _color = Color.fromRGBO(166, 77, 255, 1);
                     _appBarColor = Color.fromRGBO(166, 77, 255, 1);
                     _appBarText = Text('채널표');
+                    await Navigator.push(context, MaterialPageRoute(builder: (context)=>Channel()));
                   });
                   Navigator.of(context).pop();
                   print('ChannelTable Button is clicked.');
