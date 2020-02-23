@@ -55,6 +55,17 @@ flutter:
   assets:
    - assets/loading.gif
    - videos/Prologue_Timelapse.mp4
+   - assets/icons/mic.png
+   - assets/icons/leader_mic.png
+   - assets/icons/rev_mic.png
+   - assets/icons/guitar.png
+   - assets/icons/guitar2.png
+   - assets/icons/piano.png
+   - assets/icons/piano2.png
+   - assets/icons/piano3.png
+   - assets/icons/fclef.png
+
+
 #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
