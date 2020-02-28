@@ -2,13 +2,19 @@ import 'dart:convert';
 import 'dart:ui';
 
 //import 'package:firebase_auth_login_youtube/screens/mainPage_drawer_contents/drawer_inner_page/modifyChannel.dart';
+import 'package:firebase_auth_login_youtube/screens/mainPage_drawer_contents/drawer_inner_page/modifyChannel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 //import 'authPage.dart';
 
 class Channel extends StatefulWidget {
+  Channel({this.email});
+  final String email;
+
   @override
   _ChannelState createState() => _ChannelState();
 }
@@ -25,13 +31,14 @@ class _ChannelState extends State<Channel> {
   Color unselectedChannelColor;
   String status;
   String currentChannel;
+  String userID;
 
   @override
   void initState() {
     super.initState();
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitUp,
-    ]);
+//    SystemChrome.setPreferredOrientations([
+//      DeviceOrientation.portraitUp,
+//    ]);
     channels = [singerList(), guitarList(), keysList(), drumList()];
     tabColor = Colors.amber;
     unSelectedTabColor = Colors.grey[200];
@@ -41,52 +48,75 @@ class _ChannelState extends State<Channel> {
     selectedChannelColor = null;
     status = '채널을 선택해주세요!';
     currentChannel = '';
+    userID = widget.email;
   }
 
-  @override
-  void dispose() {
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitUp,
-      DeviceOrientation.portraitDown,
-      DeviceOrientation.landscapeLeft,
-      DeviceOrientation.landscapeRight,
-    ]);
-    super.dispose();
-  }
-
-//  GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-//  _showSnackBar() {
-//    final snackBar = SnackBar(
-//      content: Text('채널을 수정하려면 로그인이 필요합니다.'),
-//      action: SnackBarAction(label: '로그인', onPressed: (){
-//        Navigator.push(context, MaterialPageRoute(builder: (context) => ModifyChannel()));
-//      },),
-//    );
-//    _scaffoldKey.currentState.showSnackBar(snackBar);
+//  @override
+//  void dispose() {
+//    SystemChrome.setPreferredOrientations([
+//      DeviceOrientation.portraitUp,
+//      DeviceOrientation.portraitDown,
+//      DeviceOrientation.landscapeLeft,
+//      DeviceOrientation.landscapeRight,
+//    ]);
+//    super.dispose();
 //  }
+
+  GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  _showSnackBar() {
+    final snackBar = SnackBar(
+      content: Text('채널을 수정하시겠습니까?'),
+      action: SnackBarAction(label: '네에!', onPressed: (){
+        if (userID == 'tombyun@naver.com' ||
+            userID == 'chmj102@naver.com' ||
+            userID == 'yejin.jenny.yoon@gmail.com'
+        ) {
+          Navigator.push(context, MaterialPageRoute(builder: (context) => ModifyChannel()));
+          print('OK');
+        }
+        else
+          toastIsAuth();
+        print('NO');
+        setState(() {
+        });
+      },),
+    );
+    _scaffoldKey.currentState.showSnackBar(snackBar);
+  }
+
+  void toastIsAuth() {
+  Fluttertoast.showToast(
+      msg: '권한이 없습니다.',
+      gravity: ToastGravity.BOTTOM,
+      backgroundColor: Colors.amber,
+      fontSize: 20.0,
+      textColor: Colors.black,
+      toastLength: Toast.LENGTH_SHORT);
+}
 
 
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
 
     return Scaffold(
-//      key: _scaffoldKey,
+      key: _scaffoldKey,
       appBar: AppBar(
         brightness: Brightness.light,
         shape: RoundedRectangleBorder(side:BorderSide(style:BorderStyle.none),borderRadius: BorderRadius.only(bottomLeft: Radius.circular(10), bottomRight: Radius.circular(10),)),
 //        elevation: 0,
         leading: Padding(
-          padding: EdgeInsets.only(top: 10, bottom: 10, right: 10),
+          padding: EdgeInsets.only(top: 10, bottom: 10, left: 10, right: 10),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               Container(
                   width: 30, height: 30,
-                  child: IconButton(icon: Icon(Icons.edit),
+                  child: IconButton(icon: FaIcon(FontAwesomeIcons.penAlt),
                     iconSize: 17,
                     onPressed: () {
-//                      _showSnackBar();
+
+                      _showSnackBar();
                       setState(() {
 
                       });

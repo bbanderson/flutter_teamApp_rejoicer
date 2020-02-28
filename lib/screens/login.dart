@@ -11,6 +11,7 @@ import 'package:firebase_auth_login_youtube/screens/main_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 
 //import 'package:kakao_flutter_sdk/all.dart';
@@ -39,18 +40,18 @@ class AuthPage extends StatelessWidget {
         .size;
 
     return Scaffold(
-      backgroundColor: Colors.amber,
-      appBar: AppBar(
-        elevation: 0,
-        centerTitle: true,
-        title: Text(
-          '\nRejoicer\n',
-          maxLines: 2,
+      backgroundColor: Colors.amber[200],
+//      appBar: AppBar(
+//        elevation: 0,
+//        centerTitle: true,
+//        title: Text(
+//          '\nRejoicer\n',
+//          maxLines: 2,
 //          textScaleFactor: 1,
-          style: TextStyle(letterSpacing: 5),
-          textAlign: TextAlign.center,
-        ),
-      ),
+//          style: TextStyle(letterSpacing: 5),
+//          textAlign: TextAlign.center,
+//        ),
+//      ),
       body: myOriginalLoginStack(size),
     );
   }
@@ -322,7 +323,7 @@ class AuthPage extends StatelessWidget {
           builder: (context, guestOrRejoicer, child) =>
               RaisedButton(
                 child: Text(
-                  guestOrRejoicer.isRejoicer ? 'Let\'s get it!' : 'Guest로 로그인',
+                  guestOrRejoicer.isRejoicer ? 'Log In' : 'Guest로 로그인',
                   style: TextStyle(fontSize: 20, color: Colors.black),
                 ),
                 color: guestOrRejoicer.isRejoicer ? Colors.orange : Colors.blue,

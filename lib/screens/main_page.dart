@@ -13,6 +13,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 //import 'package:fluttertoast/fluttertoast.dart';
 import 'package:firebase_auth_login_youtube/main.dart';
+import 'package:flutter/services.dart';
 import '../data/users_id.dart';
 
 class MainPage extends StatefulWidget {
@@ -28,6 +29,15 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
+
+
+  String userName = Inst();
+//  @override
+//  void init() {
+//    super.initState();
+//    String userID = email;
+//  }
+
   Color _color = Colors.orange[200];
   Color _appBarColor = Colors.amber;
   Text _appBarText = Text('Home');
@@ -40,6 +50,7 @@ class _MainPageState extends State<MainPage> {
   int duration = 2;
   Widget currentWidget = progress;
   bool isProgressed = true;
+
 
   // bottonNav 누를 때 변경 사항 저장하기 -> live, weather, chat Page
   static List<Widget> _widgetOptions = <Widget>[
@@ -145,7 +156,7 @@ class _MainPageState extends State<MainPage> {
                 ),
               ],
               accountName: Text(
-                '변현홍',
+                userName,
                 style: TextStyle(fontFamily: 'qiannian'),
               ),
               accountEmail: Text(widget.email),
@@ -278,7 +289,7 @@ class _MainPageState extends State<MainPage> {
                     _color = Color.fromRGBO(166, 77, 255, 1);
                     _appBarColor = Color.fromRGBO(166, 77, 255, 1);
                     _appBarText = Text('채널표');
-                    await Navigator.push(context, MaterialPageRoute(builder: (context)=>Channel()));
+                     await Navigator.push(context, MaterialPageRoute(builder: (context)=>Channel(email: widget.email)));
                   });
                   Navigator.of(context).pop();
                   print('ChannelTable Button is clicked.');
