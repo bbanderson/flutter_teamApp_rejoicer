@@ -7,11 +7,11 @@ import 'package:firebase_auth_login_youtube/bloc/random_list.dart';
 import 'package:firebase_auth_login_youtube/bloc/saved.dart';
 import 'package:firebase_auth_login_youtube/data/profileImage.dart';
 import 'package:firebase_auth_login_youtube/screens/login.dart';
-import 'package:firebase_auth_login_youtube/screens/mainPage_drawer_contents/channel.dart';
+import 'package:firebase_auth_login_youtube/screens/mainPage_drawer_contents/channels.dart';
 import 'package:firebase_auth_login_youtube/screens/socket/socket_chat.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+//import 'package:fluttertoast/fluttertoast.dart';
 import 'package:firebase_auth_login_youtube/main.dart';
 import '../data/users_id.dart';
 
@@ -505,15 +505,15 @@ class _MainPageState extends State<MainPage> {
   }
 }
 
-void toastIsAuth() {
-  Fluttertoast.showToast(
-      msg: '권한이 없습니다.',
-      gravity: ToastGravity.BOTTOM,
-      backgroundColor: Colors.redAccent,
-      fontSize: 20.0,
-      textColor: Colors.white,
-      toastLength: Toast.LENGTH_SHORT);
-}
+//void toastIsAuth() {
+//  Fluttertoast.showToast(
+//      msg: '권한이 없습니다.',
+//      gravity: ToastGravity.BOTTOM,
+//      backgroundColor: Colors.redAccent,
+//      fontSize: 20.0,
+//      textColor: Colors.white,
+//      toastLength: Toast.LENGTH_SHORT);
+//}
 
 Widget progress = Container(
   key: ValueKey(0),
