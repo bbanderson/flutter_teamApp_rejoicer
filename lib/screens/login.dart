@@ -21,26 +21,73 @@ import 'package:provider/provider.dart';
 
 //KakaoContext.clientId = "${put your native app key here}";
 
-class AuthPage extends StatelessWidget {
+class AuthPage extends StatefulWidget {
+  @override
+  _AuthPageState createState() => _AuthPageState();
+}
+
+class _AuthPageState extends State<AuthPage> {
+  final GlobalKey<ScaffoldState> _showSnackBar = GlobalKey<ScaffoldState>();
+
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
   final GlobalKey<FormState> _guestForm = GlobalKey<FormState>();
+
   final TextEditingController _idController = TextEditingController();
+
   final TextEditingController _passwordController = TextEditingController();
 
   final double _tvHeight = 0.3;
+
+  _authSnackBar() {
+    final snackBar = SnackBar(
+      content: Text('다시 시도해 주세요.'),
+      action: SnackBarAction(
+        label: 'OK',
+        onPressed: () {},
+      ),
+    );
+    _showSnackBar.currentState.showSnackBar(snackBar);
+  }
 
   double makeTvHeight(size) {
     return size * _tvHeight;
   }
 
+  VideoPlayerController videoPlayerController;
+
+  @override
+  void initState() {
+    super.initState();
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+    ]);
+    videoPlayerController = VideoPlayerController.asset('videos/loginPage.mov')
+      ..initialize().then((_) {
+        setState(() {});
+      });
+    videoPlayerController.setLooping(true);
+    videoPlayerController.play();
+  }
+
+  @override
+  void dispose() {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+      DeviceOrientation.landscapeLeft,
+      DeviceOrientation.landscapeRight,
+    ]);
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-    final Size size = MediaQuery
-        .of(context)
-        .size;
+    final Size size = MediaQuery.of(context).size;
 
     return Scaffold(
-      backgroundColor: Colors.amber[200],
+      key: _showSnackBar,
+      backgroundColor: Colors.black,
 //      appBar: AppBar(
 //        elevation: 0,
 //        centerTitle: true,
@@ -61,120 +108,142 @@ class AuthPage extends StatelessWidget {
 //          CircleAvatar(
 //            child: FadeInImage.assetNetwork(placeholder: 'assets/loading.gif', image: 'assets/login_bg.gif')
 //  ),
+      VideoPlayer(videoPlayerController),
+//      SizedBox(
+//        height: 10,
+//        width: 10,
+//      ),
 
-      SizedBox(
-        height: 10,
-        width: 10,
-      ),
-
-      Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Container(
-//            height: makeTvHeight(size.height),
-          child: ListView(
-//              mainAxisAlignment: MainAxisAlignment.end,
-            children: <Widget>[
-              Container(
-                height: makeTvHeight(size.height),
-                child: Padding(
-                  padding: EdgeInsets.all(size.width * 0.01),
-                  child: Card(
-                    color: Colors.black87,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: Padding(
-                      padding: EdgeInsets.only(
-                          left: 20, right: 20, top: 10, bottom: 10),
-                      child: ChewieListItem(
-                        videoPlayerController: VideoPlayerController.asset(
-                            'videos/Prologue_Timelapse.mp4'),
-                        looping: true,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
+      Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.end,
+          children: <Widget>[
+//              Container(
+//                height: makeTvHeight(size.height),
+//                child: Padding(
+//                  padding: EdgeInsets.all(size.width * 0.01),
+//                  child: Card(
+//                    color: Colors.black87,
+//                    shape: RoundedRectangleBorder(
+//                      borderRadius: BorderRadius.circular(20),
+//                    ),
+//                    child: Padding(
+//                      padding: EdgeInsets.only(
+//                          left: 20, right: 20, top: 10, bottom: 10),
+////                      child: ChewieListItem(
+////                        videoPlayerController: VideoPlayerController.asset(
+////                            'videos/Prologue_Timelapse.mp4'),
+////                        looping: true,
+////                      ),
+//                    ),
+//                  ),
+//                ),
+//              ),
 
 //                _logoImg,
-              Stack(
-                alignment: Alignment.centerLeft,
-                children: <Widget>[
+            Container(
+              child: _bottomBar(size),
+            ),
+//              Container(
+//                height: size.height * 0.1,
+//              ),
+            Container(
+              height: size.height * 0.7,
+              child: SingleChildScrollView(
+
+                child: Container(
+                  child: Stack(
+                    alignment: Alignment.bottomCenter,
+                    children: <Widget>[
 //                    CustomPaint(
 //                      size: size,
 //                      painter: LoginBackground(isRejoicer: Provider.of<GuestOrRejoicer>(context).isRejoicer),
 //                    ),
-                  Consumer<GuestOrRejoicer>(
-                    builder: (context, value, child) =>
-                    value.isRejoicer
-                        ? _inputForm(size)
-                        : Card(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(16),
-                      ),
-                      elevation: 10.0,
-                      child: Padding(
-                        padding: const EdgeInsets.only(
-                          left: 12.0,
-                          right: 12.0,
-                          top: 12.0,
-                          bottom: 32.0,
-                        ),
-                        child: Form(
-                            key: _guestForm,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Text(
-                                  'Guest 모드에서는 게시글 작성 등의 기능과 열람할 수 있는 정보가 제한됩니다.'
-                                  , textAlign: TextAlign.center),
-                                Container(
-                                  height: 8,
+
+                      Consumer<GuestOrRejoicer>(
+                        builder: (context, value, child) => value.isRejoicer
+                            ? Opacity(
+                                opacity: value.isRejoicer ? 1 : 0,
+                                child: _inputForm(size))
+                            : Padding(
+                                padding: EdgeInsets.all(size.width * 0.05),
+                                child: Opacity(
+                                  opacity: 0,
+                                  child: Card(
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(16),
+                                    ),
+                                    elevation: 10.0,
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(
+                                        left: 12.0,
+                                        right: 12.0,
+                                        top: 12.0,
+                                        bottom: 32.0,
+                                      ),
+                                      child: Form(
+                                          key: _guestForm,
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: <Widget>[
+                                              Text(
+                                                  'Guest 모드에서는 게시글 작성 등의 기능과 열람할 수 있는 정보가 제한됩니다.',
+                                                  textAlign:
+                                                      TextAlign.center),
+                                              Container(
+                                                height: 8,
+                                              ),
+                                              Consumer<GuestOrRejoicer>(
+                                                builder: (context, value,
+                                                        child) =>
+                                                    Opacity(
+                                                        opacity:
+                                                            value.isRejoicer
+                                                                ? 1
+                                                                : 0,
+                                                        child:
+                                                            GestureDetector(
+                                                                onTap: value
+                                                                        .isRejoicer
+                                                                    ? () {
+                                                                        goToForgetPw(
+                                                                            context);
+                                                                      }
+                                                                    : null,
+                                                                child: Text(
+                                                                    '- 비밀번호를 잊으셨나요?'))),
+                                              ),
+                                            ],
+                                          )),
+                                    ),
+                                  ),
                                 ),
-                                Consumer<GuestOrRejoicer>(
-                                  builder: (context, value, child) =>
-                                      Opacity(
-                                          opacity: value.isRejoicer ? 1 : 0,
-                                          child: GestureDetector(
-                                              onTap: value.isRejoicer
-                                                  ? () {
-                                                goToForgetPw(context);
-                                              }
-                                                  : null,
-                                              child: Text('- 비밀번호를 잊으셨나요?'))),
-                                ),
-                              ],
-                            )),
+                              ),
                       ),
-                    ),
-                  ),
-                  _loginButton(size),
+                      _loginButton(size),
 //                    Container(width: 100, height: 50, color: Colors.black,),
-                ],
+                    ],
+                  ),
+                ),
               ),
+            ),
 //          Container(height: size.height * 0.1,),
 
-              _bottomBar(size),
-
 //              Container(height: size.height * 0.05,),
-            ],
-          ),
-        ),
-      )
+          ])
     ]);
   }
 
   void _register(BuildContext context) async {
     final AuthResult result = await FirebaseAuth.instance
         .createUserWithEmailAndPassword(
-        email: _idController.text, password: _passwordController.text);
+            email: _idController.text, password: _passwordController.text);
     final FirebaseUser user = result.user;
 
     if (user == null) {
-      final snackBar = SnackBar(
-        content: Text('다시 시도해 주세요.'),
-      );
-      Scaffold.of(context).showSnackBar(snackBar);
+      _authSnackBar();
     }
 
 //    Navigator.push(context, MaterialPageRoute(builder: (context)=>MainPage(email: user.email)));
@@ -183,7 +252,7 @@ class AuthPage extends StatelessWidget {
   void _login(BuildContext context) async {
     final AuthResult result = await FirebaseAuth.instance
         .signInWithEmailAndPassword(
-        email: _idController.text, password: _passwordController.text);
+            email: _idController.text, password: _passwordController.text);
     final FirebaseUser user = result.user;
 
     if (user == null) {
@@ -193,7 +262,8 @@ class AuthPage extends StatelessWidget {
       Scaffold.of(context).showSnackBar(snackBar);
     }
 
-//    Navigator.push(context, MaterialPageRoute(builder: (context)=>MainPage(email: user.email)));
+    Navigator.push(context,
+        MaterialPageRoute(builder: (context) => MainPage(email: user.email)));
   }
 
   Widget _inputForm(Size size) {
@@ -222,7 +292,7 @@ class AuthPage extends StatelessWidget {
                     decoration: InputDecoration(
                       icon: Icon(Icons.account_circle),
                       labelText: '이메일',
-                      hintText: '실제 사용하시는 이메일을 입력해주세요!',
+                      hintText: '이메일을 입력해주세요!',
                     ),
                     validator: (String value) {
                       if (value.isEmpty) {
@@ -251,16 +321,15 @@ class AuthPage extends StatelessWidget {
                     height: 8,
                   ),
                   Consumer<GuestOrRejoicer>(
-                    builder: (context, value, child) =>
-                        Opacity(
-                            opacity: value.isRejoicer ? 1 : 0,
-                            child: GestureDetector(
-                                onTap: value.isRejoicer
-                                    ? () {
-                                  goToForgetPw(context);
-                                }
-                                    : null,
-                                child: Text('- 비밀번호를 잊으셨나요?'))),
+                    builder: (context, value, child) => Opacity(
+                        opacity: value.isRejoicer ? 1 : 0,
+                        child: GestureDetector(
+                            onTap: value.isRejoicer
+                                ? () {
+                                    goToForgetPw(context);
+                                  }
+                                : null,
+                            child: Text('- 비밀번호를 잊으셨나요?'))),
                   ),
                 ],
               )),
@@ -271,7 +340,8 @@ class AuthPage extends StatelessWidget {
 
   Widget _bottomBar(Size size) {
     return Container(
-      margin: EdgeInsets.all(20),
+      width: size.width * 0.5,
+      margin: EdgeInsets.all(30),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         mainAxisSize: MainAxisSize.max,
@@ -279,7 +349,7 @@ class AuthPage extends StatelessWidget {
 //          _kakaoLogin(),
           RaisedButton(
             shape:
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
             disabledColor: Colors.grey[850],
 //        elevation: 0.0,
             child: Consumer<GuestOrRejoicer>(
@@ -290,14 +360,15 @@ class AuthPage extends StatelessWidget {
                       },
                       child: Text(
                         guestOrRejoicer.isRejoicer
-                            ? '계정이 없으시면 Leader에게 문의하세요!\nGuest로 들어가시겠어요?'
-                            : 'Guest 모드입니다.\nRejoicer로 들어가시겠어요?',
+                            ? '소셜 로그인하러가기'
+                            : 'Rejoice 계정으로 로그인하기',
                         textAlign: TextAlign.center,
                         style: TextStyle(
+                          fontSize: 12,
                           fontWeight: FontWeight.bold,
                           color: guestOrRejoicer.isRejoicer
                               ? Colors.white
-                              : Colors.blue,
+                              : Colors.white,
                         ),
                       )),
             ),
@@ -320,29 +391,28 @@ class AuthPage extends StatelessWidget {
       child: SizedBox(
         height: 50,
         child: Consumer<GuestOrRejoicer>(
-          builder: (context, guestOrRejoicer, child) =>
-              RaisedButton(
-                child: Text(
-                  guestOrRejoicer.isRejoicer ? 'Log In' : 'Guest로 로그인',
-                  style: TextStyle(fontSize: 20, color: Colors.black),
-                ),
-                color: guestOrRejoicer.isRejoicer ? Colors.orange : Colors.blue,
-                shape:
+          builder: (context, guestOrRejoicer, child) => RaisedButton(
+            child: Text(
+              guestOrRejoicer.isRejoicer ? 'Rejoice 계정으로 로그인' : 'Guest로 로그인',
+              style: TextStyle(fontSize: 20, color: Colors.black),
+            ),
+            color: guestOrRejoicer.isRejoicer ? Colors.amber[200] : Colors.blue,
+            shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
-                onPressed: () {
-                  if (_formKey.currentState.validate()) {
-                    guestOrRejoicer.isRejoicer ? _login(context) : null;
+            onPressed: () {
+              guestOrRejoicer.isRejoicer ? _authSnackBar() : null;
+              if (_formKey.currentState.validate()) {
+                guestOrRejoicer.isRejoicer ? _login(context) : null;
 //                print(_idController.text.toString());
-                  }
-                },
-              ),
+              }
+            },
+          ),
         ),
       ),
     );
   }
 
-  Widget get _logoImg =>
-      Expanded(
+  Widget get _logoImg => Expanded(
         child: Padding(
           padding: const EdgeInsets.only(top: 40, left: 24, right: 24),
           child: FittedBox(
@@ -355,15 +425,6 @@ class AuthPage extends StatelessWidget {
           ),
         ),
       );
-
-//  Widget _kakaoLogin() {
-//    return RaisedButton(
-//      child: Text('Login with kakao'),
-//      onPressed: () {
-//        _loginWithKakao();
-//      },
-//    );
-//  }
 }
 
 //  void _loginWithKakao() async {
