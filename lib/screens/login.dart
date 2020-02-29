@@ -2,6 +2,7 @@ import 'dart:async';
 //import 'dart:js';
 
 //import 'dart:html';
+import 'package:apple_sign_in/apple_sign_in.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_auth_login_youtube/data/guest_or_rejoicer.dart';
 import 'package:firebase_auth_login_youtube/helper/login_background.dart';
@@ -13,6 +14,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
+//import 'package:flutter_kakao_login/flutter_kakao_login.dart';
 
 //import 'package:kakao_flutter_sdk/all.dart';
 import 'package:video_player/video_player.dart';
@@ -36,6 +38,8 @@ class _AuthPageState extends State<AuthPage> {
   final TextEditingController _idController = TextEditingController();
 
   final TextEditingController _passwordController = TextEditingController();
+
+  final ScrollController _scrollController = ScrollController();
 
   final double _tvHeight = 0.3;
 
@@ -85,9 +89,16 @@ class _AuthPageState extends State<AuthPage> {
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
 
-    return Scaffold(
-      key: _showSnackBar,
-      backgroundColor: Colors.black,
+    return Stack(children: <Widget>[
+      VideoPlayer(videoPlayerController),
+      GestureDetector(
+        onTap: () {
+          FocusScope.of(context).requestFocus(new FocusNode());
+        },
+        child: Scaffold(
+          resizeToAvoidBottomInset: false,
+          key: _showSnackBar,
+          backgroundColor: Colors.transparent,
 //      appBar: AppBar(
 //        elevation: 0,
 //        centerTitle: true,
@@ -99,26 +110,31 @@ class _AuthPageState extends State<AuthPage> {
 //          textAlign: TextAlign.center,
 //        ),
 //      ),
-      body: myOriginalLoginStack(size),
-    );
+          body: myOriginalLoginStack(size),
+        ),
+      ),
+    ]);
   }
 
   Stack myOriginalLoginStack(Size size) {
+//    final _auth = Provider.of(context).auth;
+
     return Stack(children: <Widget>[
 //          CircleAvatar(
 //            child: FadeInImage.assetNetwork(placeholder: 'assets/loading.gif', image: 'assets/login_bg.gif')
 //  ),
-      VideoPlayer(videoPlayerController),
 //      SizedBox(
 //        height: 10,
 //        width: 10,
 //      ),
 
-      Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.end,
-          children: <Widget>[
+      Positioned(
+        top: size.height * 0.3,
+        child: Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+//            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: <Widget>[
 //              Container(
 //                height: makeTvHeight(size.height),
 //                child: Padding(
@@ -142,97 +158,131 @@ class _AuthPageState extends State<AuthPage> {
 //              ),
 
 //                _logoImg,
-            Container(
-              child: _bottomBar(size),
-            ),
+
 //              Container(
 //                height: size.height * 0.1,
 //              ),
-            Container(
-              height: size.height * 0.7,
-              child: SingleChildScrollView(
+              Container(
+                height: size.height,
+                width: size.width,
+                child: ListView(
 
-                child: Container(
-                  child: Stack(
-                    alignment: Alignment.bottomCenter,
-                    children: <Widget>[
+                  controller: _scrollController,
+                  children: <Widget>[
+                    Stack(
+                      alignment: Alignment.bottomCenter,
+                      children: <Widget>[
 //                    CustomPaint(
 //                      size: size,
 //                      painter: LoginBackground(isRejoicer: Provider.of<GuestOrRejoicer>(context).isRejoicer),
 //                    ),
 
-                      Consumer<GuestOrRejoicer>(
-                        builder: (context, value, child) => value.isRejoicer
-                            ? Opacity(
-                                opacity: value.isRejoicer ? 1 : 0,
-                                child: _inputForm(size))
-                            : Padding(
-                                padding: EdgeInsets.all(size.width * 0.05),
-                                child: Opacity(
-                                  opacity: 0,
-                                  child: Card(
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(16),
-                                    ),
-                                    elevation: 10.0,
-                                    child: Padding(
-                                      padding: const EdgeInsets.only(
-                                        left: 12.0,
-                                        right: 12.0,
-                                        top: 12.0,
-                                        bottom: 32.0,
+                        Consumer<GuestOrRejoicer>(
+                          builder: (context, value, child) => value.isRejoicer
+                              ? Opacity(
+                                  opacity: value.isRejoicer ? 1 : 0,
+                                  child: _inputForm(size))
+                              : Padding(
+                                  padding: EdgeInsets.all(size.width * 0.05),
+                                  child: Opacity(
+                                    opacity: 0,
+                                    child: Card(
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(16),
                                       ),
-                                      child: Form(
-                                          key: _guestForm,
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: <Widget>[
-                                              Text(
-                                                  'Guest 모드에서는 게시글 작성 등의 기능과 열람할 수 있는 정보가 제한됩니다.',
-                                                  textAlign:
-                                                      TextAlign.center),
-                                              Container(
-                                                height: 8,
-                                              ),
-                                              Consumer<GuestOrRejoicer>(
-                                                builder: (context, value,
-                                                        child) =>
-                                                    Opacity(
-                                                        opacity:
-                                                            value.isRejoicer
-                                                                ? 1
-                                                                : 0,
-                                                        child:
-                                                            GestureDetector(
-                                                                onTap: value
-                                                                        .isRejoicer
-                                                                    ? () {
-                                                                        goToForgetPw(
-                                                                            context);
-                                                                      }
-                                                                    : null,
-                                                                child: Text(
-                                                                    '- 비밀번호를 잊으셨나요?'))),
-                                              ),
-                                            ],
-                                          )),
+                                      elevation: 10.0,
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(
+                                          left: 12.0,
+                                          right: 12.0,
+                                          top: 12.0,
+                                          bottom: 32.0,
+                                        ),
+                                        child: Form(
+                                            key: _guestForm,
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: <Widget>[
+                                                Text(
+                                                    'Guest 모드에서는 게시글 작성 등의 기능과 열람할 수 있는 정보가 제한됩니다.',
+                                                    textAlign:
+                                                        TextAlign.center),
+                                                Container(
+                                                  height: 8,
+                                                ),
+                                                Consumer<GuestOrRejoicer>(
+                                                  builder: (context, value,
+                                                          child) =>
+                                                      Opacity(
+                                                          opacity:
+                                                              value.isRejoicer
+                                                                  ? 1
+                                                                  : 0,
+                                                          child:
+                                                              GestureDetector(
+                                                                  onTap: value
+                                                                          .isRejoicer
+                                                                      ? () {
+                                                                          goToForgetPw(context);
+                                                                        }
+                                                                      : null,
+                                                                  child: Text(
+                                                                      '- 비밀번호를 잊으셨나요?'))),
+                                                ),
+                                              ],
+                                            )),
+                                      ),
                                     ),
                                   ),
                                 ),
-                              ),
-                      ),
-                      _loginButton(size),
+                        ),
+                        _loginButton(size),
+
 //                    Container(width: 100, height: 50, color: Colors.black,),
-                    ],
-                  ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: size.height * 0.05,
+                    ),
+                    Consumer<GuestOrRejoicer>(
+                      builder: (context, guestOrRejoicer, child) =>
+                          guestOrRejoicer.isRejoicer
+                              ? Container(
+                                  width: size.width * 0.5,
+                                  child: AppleSignInButton(
+                                    onPressed: () async {
+//                  await _auth.signInWithApple();
+//                  Navigator.push(context,
+//                      MaterialPageRoute(builder: (context) => MainPage(email: user.email)));
+//                  Navigator.of(context).pushReplacementNamed('/home');
+                                    },
+                                    style: ButtonStyle.black,
+                                  ),
+                                )
+                              : SizedBox(),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                  ],
                 ),
               ),
-            ),
+
+//            FlutterKakaoLogin(),
 //          Container(height: size.height * 0.1,),
 
 //              Container(height: size.height * 0.05,),
-          ])
+            ]),
+      ),
+      Positioned(
+        right: -30,
+        child: Container(
+          margin: EdgeInsets.all(0.0),
+          child: _bottomBar(size),
+        ),
+      ),
     ]);
   }
 
@@ -287,6 +337,10 @@ class _AuthPageState extends State<AuthPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   TextFormField(
+                    onTap: () {
+                      _scrollController.jumpTo(10.0);
+                    },
+                    autofocus: true,
                     keyboardType: TextInputType.emailAddress,
                     controller: _idController,
                     decoration: InputDecoration(
@@ -302,6 +356,9 @@ class _AuthPageState extends State<AuthPage> {
                     },
                   ),
                   TextFormField(
+                    onTap: () {
+                      _scrollController.jumpTo(10.0);
+                    },
                     keyboardType: TextInputType.visiblePassword,
                     obscureText: true,
                     controller: _passwordController,
@@ -341,7 +398,7 @@ class _AuthPageState extends State<AuthPage> {
   Widget _bottomBar(Size size) {
     return Container(
       width: size.width * 0.5,
-      margin: EdgeInsets.all(30),
+      margin: EdgeInsets.only(top: 30),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         mainAxisSize: MainAxisSize.max,
@@ -358,18 +415,25 @@ class _AuthPageState extends State<AuthPage> {
                       onTap: () {
                         guestOrRejoicer.toggle();
                       },
-                      child: Text(
-                        guestOrRejoicer.isRejoicer
-                            ? '소셜 로그인하러가기'
-                            : 'Rejoice 계정으로 로그인하기',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.bold,
-                          color: guestOrRejoicer.isRejoicer
-                              ? Colors.white
-                              : Colors.white,
-                        ),
+                      child: Row(
+                        children: <Widget>[
+                          Text(
+                            guestOrRejoicer.isRejoicer ? '배경영상 보기' : '로그인하기',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontSize: 10,
+                              fontWeight: FontWeight.bold,
+                              color: guestOrRejoicer.isRejoicer
+                                  ? Colors.white
+                                  : Colors.white,
+                            ),
+                          ),
+                          Icon(
+                            CupertinoIcons.refresh_thick,
+                            color: Colors.white,
+                            size: 11,
+                          ),
+                        ],
                       )),
             ),
           ),
@@ -389,25 +453,47 @@ class _AuthPageState extends State<AuthPage> {
       right: size.width * 0.15,
       bottom: 0,
       child: SizedBox(
+        width: size.width * 0.5,
         height: 50,
-        child: Consumer<GuestOrRejoicer>(
-          builder: (context, guestOrRejoicer, child) => RaisedButton(
-            child: Text(
-              guestOrRejoicer.isRejoicer ? 'Rejoice 계정으로 로그인' : 'Guest로 로그인',
-              style: TextStyle(fontSize: 20, color: Colors.black),
-            ),
-            color: guestOrRejoicer.isRejoicer ? Colors.amber[200] : Colors.blue,
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
-            onPressed: () {
-              guestOrRejoicer.isRejoicer ? _authSnackBar() : null;
-              if (_formKey.currentState.validate()) {
-                guestOrRejoicer.isRejoicer ? _login(context) : null;
-//                print(_idController.text.toString());
-              }
-            },
+        child: RaisedButton(
+          child: Text(
+            'Rejoice 계정으로 로그인',
+            style: TextStyle(fontSize: 15, color: Colors.white),
           ),
-        ),
+          color: Colors.grey[850],
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(25)),
+          onPressed: () {
+//                        guestOrRejoicer.isRejoicer ? _authSnackBar() : null;
+            if (_formKey.currentState.validate()) {
+              _login(context);
+                print(_idController.text.toString());
+            }
+          },
+        )
+
+
+//        Consumer<GuestOrRejoicer>(
+//          builder: (context, guestOrRejoicer, child) =>
+//              guestOrRejoicer.isRejoicer
+//                  ? RaisedButton(
+//                      child: Text(
+//                        'Rejoice 계정으로 로그인',
+//                        style: TextStyle(fontSize: 15, color: Colors.white),
+//                      ),
+//                      color: Colors.grey[850],
+//                      shape: RoundedRectangleBorder(
+//                          borderRadius: BorderRadius.circular(25)),
+//                      onPressed: () {
+////                        guestOrRejoicer.isRejoicer ? _authSnackBar() : null;
+//                        if (_formKey.currentState.validate()) {
+//                          guestOrRejoicer.isRejoicer ? _login(context) : _authSnackBar();
+////                print(_idController.text.toString());
+//                        }
+//                      },
+//                    )
+//                  : SizedBox(),
+//        ),
       ),
     );
   }

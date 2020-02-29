@@ -12,6 +12,7 @@ import 'package:firebase_auth_login_youtube/screens/socket/socket_chat.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+
 //import 'package:fluttertoast/fluttertoast.dart';
 import 'package:firebase_auth_login_youtube/main.dart';
 import 'package:flutter/services.dart';
@@ -32,8 +33,6 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
-
-
 //  String userName = instTeam;
 
 //  @override
@@ -54,7 +53,6 @@ class _MainPageState extends State<MainPage> {
   int duration = 2;
   Widget currentWidget = progress;
   bool isProgressed = true;
-
 
   // bottonNav 누를 때 변경 사항 저장하기 -> live, weather, chat Page
   static List<Widget> _widgetOptions = <Widget>[
@@ -94,8 +92,6 @@ class _MainPageState extends State<MainPage> {
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
     var userData = emailToConfig[widget.email];
-
-
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -138,10 +134,13 @@ class _MainPageState extends State<MainPage> {
                 otherAccountsPictures: <Widget>[
                   CircleAvatar(
                     // backgroundImage: AssetImage('assets/leader.png'),
-                    child: userData.isLeader?Text(
-                      '☆☆☆',
-                      style: TextStyle(color: Colors.black, fontSize: 10.0),
-                    ):Text('☆'),
+                    child: userData.isLeader
+                        ? Text(
+                            '☆☆☆',
+                            style:
+                                TextStyle(color: Colors.black, fontSize: 10.0),
+                          )
+                        : Text('☆'),
                     backgroundColor: Colors.white,
                   ),
                   // CircleAvatar(
@@ -160,7 +159,10 @@ class _MainPageState extends State<MainPage> {
                     icon: FaIcon(FontAwesomeIcons.edit),
                     onPressed: () {
 //                    Navigator.of(context).
-                          Navigator.push(context, MaterialPageRoute(builder: (context)=>ProfileImage()));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ProfileImage()));
                     },
                   ),
                 ],
@@ -298,7 +300,11 @@ class _MainPageState extends State<MainPage> {
                       _color = Color.fromRGBO(166, 77, 255, 1);
                       _appBarColor = Color.fromRGBO(166, 77, 255, 1);
                       _appBarText = Text('채널표');
-                       await Navigator.push(context, MaterialPageRoute(builder: (context)=>Channel(email: widget.email)));
+                      await Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  Channel(email: widget.email)));
                     });
                     Navigator.of(context).pop();
                     print('ChannelTable Button is clicked.');
@@ -316,7 +322,8 @@ class _MainPageState extends State<MainPage> {
                 height: 10,
               ),
               ListTile(
-                contentPadding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                contentPadding:
+                    EdgeInsets.symmetric(vertical: 5, horizontal: 10),
                 trailing: Icon(
                   Icons.exit_to_app,
                   color: Colors.grey[850],
@@ -328,6 +335,11 @@ class _MainPageState extends State<MainPage> {
                 onTap: () {
                   //    Navigator.push(context, MaterialPageRoute(builder: (context)=>MainPage(email: user.email)));
                   FirebaseAuth.instance.signOut();
+//                  Navigator.pop(context);
+//                  Navigator.push(
+//                      context,
+//                      MaterialPageRoute(
+//                          builder: (context) => AuthPage()));
                   print('Log out.');
                 },
 
@@ -398,8 +410,9 @@ class _MainPageState extends State<MainPage> {
             IconButton(
               icon: Icon(Icons.list),
               onPressed: () {
-              Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => FavoriteConti(saved: NewContiList().goToSave)));
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) =>
+                        FavoriteConti(saved: NewContiList().goToSave)));
               },
             )
           ],
@@ -436,7 +449,6 @@ class _MainPageState extends State<MainPage> {
                   ),
                 ],
               ),
-
               Container(
                 color: Colors.amber,
                 height: size.height * 0.5,
@@ -565,7 +577,8 @@ Widget layout = Container(
     ),
     title: Text('잠시만 기다려주세요'),
     subtitle: Text('loading...'),
-  ),);
+  ),
+);
 //class SavedList extends StatelessWidget {
 //  SavedList({@required this.saved});
 //
