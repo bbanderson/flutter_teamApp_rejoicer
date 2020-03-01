@@ -46,6 +46,15 @@ class _AuthPageState extends State<AuthPage> {
 
   String _error;
 
+  Future<Null> _showForgetPwCupertinoDialog (BuildContext context) async {
+    await showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return ForgetPw();
+      },
+    );
+  }
+
   _authSnackBar() {
     final snackBar = SnackBar(
       content: Text('다시 시도해 주세요.'),
@@ -416,8 +425,7 @@ class _AuthPageState extends State<AuthPage> {
                         child: GestureDetector(
                             onTap: value.isRejoicer
                                 ? () {
-                              return CupertinoAlertDialog(title: Text('sdf'),
-                              content: Text('d'),);
+                              _showForgetPwCupertinoDialog(context);
 //                                    goToForgetPw(context);
                                   }
                                 : null,
