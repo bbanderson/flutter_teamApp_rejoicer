@@ -3,6 +3,7 @@ import 'dart:async';
 
 //import 'dart:html';
 import 'package:apple_sign_in/apple_sign_in.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_auth_login_youtube/data/guest_or_rejoicer.dart';
 import 'package:firebase_auth_login_youtube/helper/login_background.dart';
@@ -42,6 +43,8 @@ class _AuthPageState extends State<AuthPage> {
   final ScrollController _scrollController = ScrollController();
 
   final double _tvHeight = 0.3;
+
+  String _error;
 
   _authSnackBar() {
     final snackBar = SnackBar(
@@ -166,7 +169,6 @@ class _AuthPageState extends State<AuthPage> {
                 height: size.height,
                 width: size.width,
                 child: ListView(
-
                   controller: _scrollController,
                   children: <Widget>[
                     Stack(
@@ -188,8 +190,7 @@ class _AuthPageState extends State<AuthPage> {
                                     opacity: 0,
                                     child: Card(
                                       shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(16),
+                                        borderRadius: BorderRadius.circular(16),
                                       ),
                                       elevation: 10.0,
                                       child: Padding(
@@ -225,7 +226,8 @@ class _AuthPageState extends State<AuthPage> {
                                                                   onTap: value
                                                                           .isRejoicer
                                                                       ? () {
-                                                                          goToForgetPw(context);
+                                                                          goToForgetPw(
+                                                                              context);
                                                                         }
                                                                       : null,
                                                                   child: Text(
@@ -263,6 +265,7 @@ class _AuthPageState extends State<AuthPage> {
                                 )
                               : SizedBox(),
                     ),
+                    ShowAlert(),
                     SizedBox(
                       height: 10,
                     ),
@@ -286,34 +289,75 @@ class _AuthPageState extends State<AuthPage> {
     ]);
   }
 
-  void _register(BuildContext context) async {
-    final AuthResult result = await FirebaseAuth.instance
-        .createUserWithEmailAndPassword(
-            email: _idController.text, password: _passwordController.text);
-    final FirebaseUser user = result.user;
-
-    if (user == null) {
-      _authSnackBar();
-    }
-
-//    Navigator.push(context, MaterialPageRoute(builder: (context)=>MainPage(email: user.email)));
-  }
+//  void _register(BuildContext context) async {
+//    final AuthResult result = await FirebaseAuth.instance
+//        .createUserWithEmailAndPassword(
+//            email: _idController.text, password: _passwordController.text);
+//    final FirebaseUser user = result.user;
+//
+//    if (user == null) {
+//      _authSnackBar();
+//    }
+//
+////    Navigator.push(context, MaterialPageRoute(builder: (context)=>MainPage(email: user.email)));
+//  }
 
   void _login(BuildContext context) async {
-    final AuthResult result = await FirebaseAuth.instance
-        .signInWithEmailAndPassword(
-            email: _idController.text, password: _passwordController.text);
-    final FirebaseUser user = result.user;
-
-    if (user == null) {
-      final snackBar = SnackBar(
-        content: Text('다시 시도해 주세요.'),
-      );
-      Scaffold.of(context).showSnackBar(snackBar);
+    try {
+      final AuthResult result = await FirebaseAuth.instance
+          .signInWithEmailAndPassword(
+              email: _idController.text, password: _passwordController.text);
+      final FirebaseUser user = result.user;
+    } catch (e) {
+      print(e);
+      setState(() {
+        _error = e.message;
+      });
     }
 
-    Navigator.push(context,
-        MaterialPageRoute(builder: (context) => MainPage(email: user.email)));
+//    if (user == null) {
+//      _authSnackBar();
+////      final snackBar = SnackBar(
+////        content: Text('다시 시도해 주세요.'),
+////      );
+////      Scaffold.of(context).showSnackBar(snackBar);
+//    }
+
+//    Navigator.push(context,
+//        MaterialPageRoute(builder: (context) => MainPage(email: user.email)));
+  }
+
+  Widget ShowAlert() {
+    if (_error != null) {
+      return Container(
+        color: Colors.amberAccent,
+        width: double.infinity,
+        padding: EdgeInsets.all(8),
+        child: Row(
+          children: <Widget>[
+            Padding(
+              padding: EdgeInsets.only(right: 8.0),
+              child: Icon(Icons.error_outline),
+            ),
+            Expanded(
+              child: AutoSizeText(
+                _error,
+                maxLines: 3,
+              ),
+            ),
+            IconButton(icon: Icon(Icons.close), onPressed: () {
+              setState(() {
+                _error = null;
+              });
+            }),
+
+          ],
+        ),
+      );
+    }
+    return SizedBox(
+      height: 0,
+    );
   }
 
   Widget _inputForm(Size size) {
@@ -350,7 +394,7 @@ class _AuthPageState extends State<AuthPage> {
                     ),
                     validator: (String value) {
                       if (value.isEmpty) {
-                        return "Rejoicer가 아닌 것 같아요!";
+                        return "이메일을 입력해주세요!";
                       }
                       return null;
                     },
@@ -369,7 +413,7 @@ class _AuthPageState extends State<AuthPage> {
                     ),
                     validator: (String value) {
                       if (value.isEmpty) {
-                        return "비밀번호가 틀린 것 같아요!";
+                        return "비밀번호를 입력해주세요!";
                       }
                       return null;
                     },
@@ -453,48 +497,52 @@ class _AuthPageState extends State<AuthPage> {
       right: size.width * 0.15,
       bottom: 0,
       child: SizedBox(
-        width: size.width * 0.5,
-        height: 50,
-        child: RaisedButton(
-          child: Text(
-            'Rejoice 계정으로 로그인',
-            style: TextStyle(fontSize: 15, color: Colors.white),
-          ),
-          color: Colors.grey[850],
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(25)),
-          onPressed: () {
+          width: size.width * 0.5,
+          height: 50,
+          child: Consumer<GuestOrRejoicer>(
+            builder: (context, guestOrRejoicer, child) =>
+                guestOrRejoicer.isRejoicer
+                    ? RaisedButton(
+                        child: Text(
+                          'Rejoice 계정으로 로그인',
+                          style: TextStyle(fontSize: 15, color: Colors.white),
+                        ),
+                        color: Colors.grey[850],
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(25)),
+                        onPressed: () {
 //                        guestOrRejoicer.isRejoicer ? _authSnackBar() : null;
-            if (_formKey.currentState.validate()) {
-              _login(context);
-                print(_idController.text.toString());
-            }
-          },
-        )
+                          if (_formKey.currentState.validate()) {
+                            guestOrRejoicer.isRejoicer
+                                ? _login(context)
+                                : _authSnackBar();
+                            print(_idController.text.toString());
+                          }
+//                        _authSnackBar();
+                        },
+                      )
+                    : SizedBox(),
+          )
 
-
-//        Consumer<GuestOrRejoicer>(
-//          builder: (context, guestOrRejoicer, child) =>
-//              guestOrRejoicer.isRejoicer
-//                  ? RaisedButton(
-//                      child: Text(
-//                        'Rejoice 계정으로 로그인',
-//                        style: TextStyle(fontSize: 15, color: Colors.white),
-//                      ),
-//                      color: Colors.grey[850],
-//                      shape: RoundedRectangleBorder(
-//                          borderRadius: BorderRadius.circular(25)),
-//                      onPressed: () {
+//        RaisedButton(
+//          child: Text(
+//            'Rejoice 계정으로 로그인',
+//            style: TextStyle(fontSize: 15, color: Colors.white),
+//          ),
+//          color: Colors.grey[850],
+//          shape: RoundedRectangleBorder(
+//              borderRadius: BorderRadius.circular(25)),
+//          onPressed: () {
 ////                        guestOrRejoicer.isRejoicer ? _authSnackBar() : null;
-//                        if (_formKey.currentState.validate()) {
-//                          guestOrRejoicer.isRejoicer ? _login(context) : _authSnackBar();
-////                print(_idController.text.toString());
-//                        }
-//                      },
-//                    )
-//                  : SizedBox(),
-//        ),
-      ),
+//            if (_formKey.currentState.validate()) {
+//              _login(context);
+//              print(_idController.text.toString());
+//            }
+//          },
+//        )
+
+//        ,
+          ),
     );
   }
 
