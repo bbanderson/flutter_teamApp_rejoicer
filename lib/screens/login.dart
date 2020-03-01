@@ -528,6 +528,9 @@ class _AuthPageState extends State<AuthPage> {
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(25)),
                         onPressed: () {
+                          setState(() {
+                            _error = null;
+                          });
 //                        guestOrRejoicer.isRejoicer ? _authSnackBar() : null;
                           if (_formKey.currentState.validate()) {
                             guestOrRejoicer.isRejoicer
