@@ -234,18 +234,18 @@ class _MainPageState extends State<MainPage> {
                 ),
                 title: Text('기도제목'),
                 onTap: () {
-                  setState(() async {
+                  setState(()  {
                     _color = Colors.yellow;
                     _appBarColor = Colors.yellow;
                     _appBarText = Text('기도제목');
-                    await Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>
-                                ContiPage()));
+//                    await Navigator.push(
+//                        context,
+//                        MaterialPageRoute(
+//                            builder: (context) =>
+//                                ContiPage()));
                   });
 
-//                  Navigator.of(context).pop();
+                  Navigator.of(context).pop();
                   print('Pray Button is clicked.');
                 },
                 // trailing: Icon(Icons.add),
@@ -257,12 +257,17 @@ class _MainPageState extends State<MainPage> {
                 ),
                 title: Text('콘티'),
                 onTap: () {
-                  setState(() {
+                  setState(() async {
                     _color = Colors.green;
                     _appBarColor = Colors.green;
                     _appBarText = Text('콘티');
+                    Navigator.of(context).pop();
+                    await Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                ContiPage()));
                   });
-                  Navigator.of(context).pop();
                   print('Conti Button is clicked.');
                 },
                 // trailing: Icon(Icons.add),
