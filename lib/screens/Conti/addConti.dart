@@ -14,6 +14,9 @@ class AddConti extends StatefulWidget {
 }
 
 class _AddContiState extends State<AddConti> {
+  final ScrollController _scrollController = ScrollController();
+
+
   String leaderName, date, songName, details;
 
   getLeaderName(leaderName) {
@@ -116,6 +119,7 @@ class _AddContiState extends State<AddConti> {
                 padding: EdgeInsets.all(30),
                 child: CupertinoScrollbar(
                   child: ListView(
+                    controller: _scrollController,
                     children: <Widget>[
                       Center(
                         child: Text(
@@ -173,6 +177,9 @@ class _AddContiState extends State<AddConti> {
                       ),
                       Text('인도자 : ${widget.name}'),
                       TextField(
+                        onTap: (){
+                          _scrollController.jumpTo(50);
+                        },
                         onChanged: (String date) {
                           getDate(date);
                         },
@@ -181,6 +188,9 @@ class _AddContiState extends State<AddConti> {
                         ),
                       ),
                       TextField(
+                        onTap: (){
+                          _scrollController.jumpTo(100);
+                        },
                         onChanged: (String songName) {
                           getSongName(songName);
                         },
@@ -189,6 +199,9 @@ class _AddContiState extends State<AddConti> {
                         ),
                       ),
                       TextField(
+                        onTap: (){
+                          _scrollController.jumpTo(200);
+                        },
                         onChanged: (String details) {
                           getDetails(details);
                         },
@@ -201,6 +214,7 @@ class _AddContiState extends State<AddConti> {
                       ),
                       RaisedButton(child: Text('돌아가기'), color: Colors.grey, onPressed: () {Navigator.of(context).pop(context);}),
                       RaisedButton(child: Text('공지하기'), color: Colors.amber, onPressed: () {createData();},),
+                      SizedBox(height: 500,),
                     ],
                   ),
                 ),

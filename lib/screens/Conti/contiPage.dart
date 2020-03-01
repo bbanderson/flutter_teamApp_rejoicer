@@ -1,10 +1,18 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth_login_youtube/data/users_id.dart';
+import 'package:firebase_auth_login_youtube/screens/Conti/addConti.dart';
+import 'package:firebase_auth_login_youtube/screens/Conti/savedContiPage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/fa_icon.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class ContiPage extends StatefulWidget {
+
+  ContiPage({this.email});
+
+  final String email;
+
   @override
   _ContiPageState createState() => _ContiPageState();
 }
@@ -13,21 +21,45 @@ class _ContiPageState extends State<ContiPage> {
 
   Set<String> savedConti = Set<String>();
 
+  Widget HeartButton(String conti) {
+
+    final bool isSaved = savedConti.contains(conti);
+
+    return ListTile(
+      title: Text(conti),
+
+    );
+
+
+  }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    bool _saved
+    String userName = emailToName[widget.email];
+
+
 
     return StreamBuilder(
       stream: Firestore.instance.collection('rejoicer-auth').snapshots(),
       // ignore: missing_return
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
-          const Text('Loading..');
+          return Container(
+//            key: ValueKey(0),
+            color: Colors.amber[50],
+            child: ListTile(
+              leading: CircularProgressIndicator(
+                valueColor: AlwaysStoppedAnimation<Color>(Colors.redAccent),
+              ),
+              title: Text('잠시만 기다려주세요'),
+              subtitle: Text('loading...'),
+            ),
+          );
         } else {
           return Scaffold(
             appBar: CupertinoNavigationBar(
-              middle: Text('그때 그 콘티'),
+              middle: Text('그때 그 콘티', style: TextStyle(fontFamily: 'qn'),),
               trailing: IconButton(
                 onPressed: (){},
                 padding: EdgeInsets.only(left: 10),
@@ -118,9 +150,12 @@ class _ContiPageState extends State<ContiPage> {
                           width: size.width,
                           child: CircleAvatar(
                             backgroundColor: Colors.black,
-                            child: Icon(
-                              Icons.favorite,
-                              size: 20,
+                            child: IconButton(
+                              icon: Icon(
+                                Icons.favorite,
+                                size: 20,
+                                color: Colors.pink,
+                              ),
                             ),
                           ),
                         ),
@@ -129,7 +164,11 @@ class _ContiPageState extends State<ContiPage> {
                   );
                 }),
             floatingActionButton: FloatingActionButton(
-              onPressed: () {},
+              child: FaIcon(FontAwesomeIcons.solidHeart, color: Colors.pink,),
+              onPressed: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => SavedConti()));
+              },
             ),
             floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
           );
@@ -137,4 +176,16 @@ class _ContiPageState extends State<ContiPage> {
       },
     );
   }
+
+  Widget progress = Container(
+    key: ValueKey(0),
+    color: Colors.amber[50],
+    child: ListTile(
+      leading: CircularProgressIndicator(
+        valueColor: AlwaysStoppedAnimation<Color>(Colors.redAccent),
+      ),
+      title: Text('잠시만 기다려주세요'),
+      subtitle: Text('loading...'),
+    ),
+  );
 }

@@ -429,7 +429,7 @@ class _MainPageState extends State<MainPage> {
           actions: <Widget>[
             IconButton(
               icon: FaIcon(
-                FontAwesomeIcons.pencilAlt,
+                FontAwesomeIcons.plusSquare,
                 color: Colors.grey[850],
               ),
               iconSize: 20,
