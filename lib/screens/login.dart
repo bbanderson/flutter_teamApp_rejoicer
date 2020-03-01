@@ -310,8 +310,18 @@ class _AuthPageState extends State<AuthPage> {
       final FirebaseUser user = result.user;
     } catch (e) {
       print(e);
+      String ema;
+      if (e.message == 'The password is invalid or the user does not have a password.') {
+        ema = '비밀번호가 틀립니다!';
+      }
+      else if (e.message == 'The email address is badly formatted.') {
+        ema = '이메일 주소가 틀립니다!';
+      }
+      else if (e.message == 'There is no user record corresponding to this identifier. The user may have been deleted.') {
+        ema = 'Rejoicer가 아닌 것 같아요!';
+      }
       setState(() {
-        _error = e.message;
+        _error = ema;
       });
     }
 
