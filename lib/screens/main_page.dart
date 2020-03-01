@@ -10,6 +10,7 @@ import 'package:firebase_auth_login_youtube/data/profileImage.dart';
 import 'package:firebase_auth_login_youtube/screens/Conti/addConti.dart';
 import 'package:firebase_auth_login_youtube/screens/login.dart';
 import 'package:firebase_auth_login_youtube/screens/mainPage_drawer_contents/channels.dart';
+import 'package:firebase_auth_login_youtube/screens/Conti/contiPage.dart';
 import 'package:firebase_auth_login_youtube/screens/socket/socket_chat.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
@@ -233,12 +234,18 @@ class _MainPageState extends State<MainPage> {
                 ),
                 title: Text('기도제목'),
                 onTap: () {
-                  setState(() {
+                  setState(() async {
                     _color = Colors.yellow;
                     _appBarColor = Colors.yellow;
                     _appBarText = Text('기도제목');
+                    await Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                ContiPage()));
                   });
-                  Navigator.of(context).pop();
+
+//                  Navigator.of(context).pop();
                   print('Pray Button is clicked.');
                 },
                 // trailing: Icon(Icons.add),
@@ -355,66 +362,8 @@ class _MainPageState extends State<MainPage> {
         ),
       ),
 
-      body: StreamBuilder(
-        stream: Firestore.instance.collection('rejoicer-auth').snapshots(),
-        builder: (context, snapshot) {
-          if (!snapshot.hasData) {
-            const Text('Loading..');
-          } else {
-            return ListView.builder(
-                itemCount: snapshot.data.documents.length,
-                itemBuilder: (context, index) {
-                  DocumentSnapshot contiList = snapshot.data.documents[index];
-                  return Stack(
-                    children: <Widget>[
-                      Column(
-                        children: <Widget>[
-                          Container(
-                            width: size.width,
-                            height: 350,
-                            child: Padding(
-                              padding: EdgeInsets.only(top: 8, bottom: 8),
-                              child: Material(
-                                color: Colors.white,
-                                elevation: 14,
-                                shadowColor: Colors.amber,
-                                child: Center(
-                                  child: Padding(
-                                    padding: EdgeInsets.all(8),
-                                    child: Column(
-                                      children: <Widget>[
-                                        Container(
-                                          width: size.width,
-                                          height: 200,
-//                                      child: Image.network('${contiList['image']}', fit: BoxFit.fill,),
-                                        ),
-                                        SizedBox(
-                                          height: 10,
-                                        ),
-                                        Text('${contiList['contiType']}'),
-                                        SizedBox(
-                                          height: 10,
-                                        ),
-                                        Text('${contiList['date']}'),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      Container(alignment: Alignment.topRight,
-                      padding: EdgeInsets.only(top: size.height * 0.47, left: size.height*0.52),
-                      child: Container(width: size.width,child: CircleAvatar(backgroundColor: Colors.black, child: Icon(Icons.favorite, size: 20,),),),),
-                    ],
-                  );
-                });
-          }
-        },
-      ),
-//        myCustomScrollView(),
+      body:
+        myCustomScrollView(),
 
       floatingActionButton: FloatingActionButton(
         onPressed: () {
