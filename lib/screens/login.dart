@@ -90,6 +90,9 @@ class _AuthPageState extends State<AuthPage> {
 
   @override
   Widget build(BuildContext context) {
+
+//    SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
+
     final Size size = MediaQuery.of(context).size;
 
     return Stack(children: <Widget>[
@@ -133,160 +136,128 @@ class _AuthPageState extends State<AuthPage> {
 
       Positioned(
         top: size.height * 0.3,
-        child: Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
-//            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.end,
+        child: Container(
+          height: size.height,
+          width: size.width,
+          child: Column(
+//            controller: _scrollController,
             children: <Widget>[
-//              Container(
-//                height: makeTvHeight(size.height),
-//                child: Padding(
-//                  padding: EdgeInsets.all(size.width * 0.01),
-//                  child: Card(
-//                    color: Colors.black87,
-//                    shape: RoundedRectangleBorder(
-//                      borderRadius: BorderRadius.circular(20),
-//                    ),
-//                    child: Padding(
-//                      padding: EdgeInsets.only(
-//                          left: 20, right: 20, top: 10, bottom: 10),
-////                      child: ChewieListItem(
-////                        videoPlayerController: VideoPlayerController.asset(
-////                            'videos/Prologue_Timelapse.mp4'),
-////                        looping: true,
-////                      ),
-//                    ),
-//                  ),
-//                ),
-//              ),
-
-//                _logoImg,
-
-//              Container(
-//                height: size.height * 0.1,
-//              ),
-              Container(
-                height: size.height,
-                width: size.width,
-                child: ListView(
-                  controller: _scrollController,
-                  children: <Widget>[
-                    Stack(
-                      alignment: Alignment.bottomCenter,
-                      children: <Widget>[
+              Stack(
+                alignment: Alignment.bottomCenter,
+                children: <Widget>[
 //                    CustomPaint(
 //                      size: size,
 //                      painter: LoginBackground(isRejoicer: Provider.of<GuestOrRejoicer>(context).isRejoicer),
 //                    ),
 
-                        Consumer<GuestOrRejoicer>(
-                          builder: (context, value, child) => value.isRejoicer
-                              ? Opacity(
-                                  opacity: value.isRejoicer ? 1 : 0,
-                                  child: _inputForm(size))
-                              : Padding(
-                                  padding: EdgeInsets.all(size.width * 0.05),
-                                  child: Opacity(
-                                    opacity: 0,
-                                    child: Card(
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(16),
-                                      ),
-                                      elevation: 10.0,
-                                      child: Padding(
-                                        padding: const EdgeInsets.only(
-                                          left: 12.0,
-                                          right: 12.0,
-                                          top: 12.0,
-                                          bottom: 32.0,
-                                        ),
-                                        child: Form(
-                                            key: _guestForm,
-                                            child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: <Widget>[
-                                                Text(
-                                                    'Guest 모드에서는 게시글 작성 등의 기능과 열람할 수 있는 정보가 제한됩니다.',
-                                                    textAlign:
-                                                        TextAlign.center),
-                                                Container(
-                                                  height: 8,
-                                                ),
-                                                Consumer<GuestOrRejoicer>(
-                                                  builder: (context, value,
-                                                          child) =>
-                                                      Opacity(
-                                                          opacity:
-                                                              value.isRejoicer
-                                                                  ? 1
-                                                                  : 0,
-                                                          child:
-                                                              GestureDetector(
-                                                                  onTap: value
-                                                                          .isRejoicer
-                                                                      ? () {
-                                                                          goToForgetPw(
-                                                                              context);
-                                                                        }
-                                                                      : null,
-                                                                  child: Text(
-                                                                      '- 비밀번호를 잊으셨나요?'))),
-                                                ),
-                                              ],
-                                            )),
-                                      ),
-                                    ),
-                                  ),
+                  Consumer<GuestOrRejoicer>(
+                    builder: (context, value, child) => value.isRejoicer
+                        ? Opacity(
+                            opacity: value.isRejoicer ? 1 : 0,
+                            child: _inputForm(size))
+                        : Padding(
+                            padding: EdgeInsets.all(size.width * 0.05),
+                            child: Opacity(
+                              opacity: 0,
+                              child: Card(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(16),
                                 ),
-                        ),
-                        _loginButton(size),
+                                elevation: 10.0,
+                                child: Padding(
+                                  padding: const EdgeInsets.only(
+                                    left: 12.0,
+                                    right: 12.0,
+                                    top: 12.0,
+                                    bottom: 32.0,
+                                  ),
+                                  child: Form(
+                                      key: _guestForm,
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: <Widget>[
+                                          Text(
+                                              'Guest 모드에서는 게시글 작성 등의 기능과 열람할 수 있는 정보가 제한됩니다.',
+                                              textAlign: TextAlign.center),
+                                          Container(
+                                            height: 8,
+                                          ),
+                                          Consumer<GuestOrRejoicer>(
+                                            builder: (context, value, child) =>
+                                                Opacity(
+                                                    opacity: value.isRejoicer
+                                                        ? 1
+                                                        : 0,
+                                                    child: GestureDetector(
+                                                        onTap: value.isRejoicer
+                                                            ? () {
+                                                          CupertinoAlertDialog();
+//                                                                goToForgetPw(
+//                                                                    context);
+                                                              }
+                                                            : null,
+                                                        child: Text(
+                                                            '- 비밀번호를 잊으셨나요?'))),
+                                          ),
+                                        ],
+                                      )),
+                                ),
+                              ),
+                            ),
+                          ),
+                  ),
+                  _loginButton(size),
+                  _appleButton(size),
 
 //                    Container(width: 100, height: 50, color: Colors.black,),
-                      ],
-                    ),
-                    SizedBox(
-                      height: size.height * 0.05,
-                    ),
-                    Consumer<GuestOrRejoicer>(
-                      builder: (context, guestOrRejoicer, child) =>
-                          guestOrRejoicer.isRejoicer
-                              ? Container(
-                                  width: size.width * 0.5,
-                                  child: AppleSignInButton(
-                                    onPressed: () async {
-//                  await _auth.signInWithApple();
-//                  Navigator.push(context,
-//                      MaterialPageRoute(builder: (context) => MainPage(email: user.email)));
-//                  Navigator.of(context).pushReplacementNamed('/home');
-                                    },
-                                    style: ButtonStyle.black,
-                                  ),
-                                )
-                              : SizedBox(),
-                    ),
-                    ShowAlert(),
-                    SizedBox(
-                      height: 10,
-                    ),
-                  ],
-                ),
+                ],
               ),
-
-//            FlutterKakaoLogin(),
-//          Container(height: size.height * 0.1,),
-
-//              Container(height: size.height * 0.05,),
-            ]),
+              SizedBox(
+                height: size.height * 0.06,
+              ),
+              ShowAlert(),
+              SizedBox(
+                height: 10,
+              ),
+            ],
+          ),
+        ),
       ),
       Positioned(
         right: -30,
         child: Container(
-          margin: EdgeInsets.all(0.0),
-          child: _bottomBar(size),
+//          margin: EdgeInsets.all(0.0),
+          child: _switch(size),
         ),
       ),
     ]);
+  }
+
+  Positioned _appleButton(Size size) {
+    return Positioned(
+//        width: size.width * 0.5,
+                  left: size.width * 0.15,
+                  right: size.width * 0.15,
+//                    bottom: size.height * 0.15,
+                  child: Center(
+                    child: Consumer<GuestOrRejoicer>(
+                      builder: (context, guestOrRejoicer, child) =>
+                          guestOrRejoicer.isRejoicer
+                              ? AppleSignInButton(
+                                  cornerRadius: 25,
+                                  onPressed: () {
+//                  await _auth.signInWithApple();
+//                  Navigator.push(context,
+//                      MaterialPageRoute(builder: (context) => MainPage(email: user.email)));
+//                  Navigator.of(context).pushReplacementNamed('/home');
+                                  },
+                                  style: ButtonStyle.black,
+                                )
+                              : SizedBox(),
+                    ),
+                  ),
+                );
   }
 
 //  void _register(BuildContext context) async {
@@ -311,13 +282,13 @@ class _AuthPageState extends State<AuthPage> {
     } catch (e) {
       print(e);
       String ema;
-      if (e.message == 'The password is invalid or the user does not have a password.') {
+      if (e.message ==
+          'The password is invalid or the user does not have a password.') {
         ema = '비밀번호가 틀립니다!';
-      }
-      else if (e.message == 'The email address is badly formatted.') {
+      } else if (e.message == 'The email address is badly formatted.') {
         ema = '이메일 주소가 틀립니다!';
-      }
-      else if (e.message == 'There is no user record corresponding to this identifier. The user may have been deleted.') {
+      } else if (e.message ==
+          'There is no user record corresponding to this identifier. The user may have been deleted.') {
         ema = 'Rejoicer가 아닌 것 같아요!';
       }
       setState(() {
@@ -339,29 +310,33 @@ class _AuthPageState extends State<AuthPage> {
 
   Widget ShowAlert() {
     if (_error != null) {
-      return Container(
+      return Card(
         color: Colors.amberAccent,
-        width: double.infinity,
-        padding: EdgeInsets.all(8),
-        child: Row(
-          children: <Widget>[
-            Padding(
-              padding: EdgeInsets.only(right: 8.0),
-              child: Icon(Icons.error_outline),
-            ),
-            Expanded(
-              child: AutoSizeText(
-                _error,
-                maxLines: 3,
+//        width: double.infinity,
+//        padding: EdgeInsets.all(8),
+        child: Padding(
+          padding:  EdgeInsets.symmetric(horizontal: 10.0),
+          child: Row(
+            children: <Widget>[
+              Padding(
+                padding: EdgeInsets.only(right: 8.0),
+                child: Icon(Icons.error_outline),
               ),
-            ),
-            IconButton(icon: Icon(Icons.close), onPressed: () {
-              setState(() {
-                _error = null;
-              });
-            }),
-
-          ],
+              Expanded(
+                child: AutoSizeText(
+                  _error,
+                  maxLines: 3,
+                ),
+              ),
+              IconButton(
+                  icon: Icon(Icons.close),
+                  onPressed: () {
+                    setState(() {
+                      _error = null;
+                    });
+                  }),
+            ],
+          ),
         ),
       );
     }
@@ -372,7 +347,11 @@ class _AuthPageState extends State<AuthPage> {
 
   Widget _inputForm(Size size) {
     return Padding(
-      padding: EdgeInsets.all(size.width * 0.05),
+      padding: EdgeInsets.only(
+          top: size.width * 0.05,
+      left: size.width * 0.05,
+      right: size.width * 0.05,
+      bottom: size.height * 0.2),
       child: Card(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(16),
@@ -392,7 +371,7 @@ class _AuthPageState extends State<AuthPage> {
                 children: <Widget>[
                   TextFormField(
                     onTap: () {
-                      _scrollController.jumpTo(10.0);
+//                      _scrollController.jumpTo(10.0);
                     },
                     autofocus: true,
                     keyboardType: TextInputType.emailAddress,
@@ -411,7 +390,7 @@ class _AuthPageState extends State<AuthPage> {
                   ),
                   TextFormField(
                     onTap: () {
-                      _scrollController.jumpTo(10.0);
+//                      _scrollController.jumpTo(10.0);
                     },
                     keyboardType: TextInputType.visiblePassword,
                     obscureText: true,
@@ -437,7 +416,9 @@ class _AuthPageState extends State<AuthPage> {
                         child: GestureDetector(
                             onTap: value.isRejoicer
                                 ? () {
-                                    goToForgetPw(context);
+                              return CupertinoAlertDialog(title: Text('sdf'),
+                              content: Text('d'),);
+//                                    goToForgetPw(context);
                                   }
                                 : null,
                             child: Text('- 비밀번호를 잊으셨나요?'))),
@@ -449,7 +430,7 @@ class _AuthPageState extends State<AuthPage> {
     );
   }
 
-  Widget _bottomBar(Size size) {
+  Widget _switch(Size size) {
     return Container(
       width: size.width * 0.5,
       margin: EdgeInsets.only(top: 30),
@@ -459,6 +440,8 @@ class _AuthPageState extends State<AuthPage> {
         children: <Widget>[
 //          _kakaoLogin(),
           RaisedButton(
+            hoverColor: Colors.white,
+            splashColor: Colors.white,
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
             disabledColor: Colors.grey[850],
@@ -468,6 +451,9 @@ class _AuthPageState extends State<AuthPage> {
                   GestureDetector(
                       onTap: () {
                         guestOrRejoicer.toggle();
+                        setState(() {
+                          _error = null;
+                        });
                       },
                       child: Row(
                         children: <Widget>[
@@ -496,16 +482,16 @@ class _AuthPageState extends State<AuthPage> {
     );
   }
 
-  goToForgetPw(BuildContext context) {
-    Navigator.push(
-        context, MaterialPageRoute(builder: (context) => ForgetPw()));
-  }
+//  goToForgetPw(BuildContext context) {
+//    Navigator.push(
+//        context, MaterialPageRoute(builder: (context) => ForgetPw()));
+//  }
 
   Widget _loginButton(Size size) {
     return Positioned(
       left: size.width * 0.15,
       right: size.width * 0.15,
-      bottom: 0,
+      bottom: size.height * 0.15,
       child: SizedBox(
           width: size.width * 0.5,
           height: 50,
@@ -513,11 +499,11 @@ class _AuthPageState extends State<AuthPage> {
             builder: (context, guestOrRejoicer, child) =>
                 guestOrRejoicer.isRejoicer
                     ? RaisedButton(
-                        child: Text(
+                        child: AutoSizeText(
                           'Rejoice 계정으로 로그인',
-                          style: TextStyle(fontSize: 15, color: Colors.white),
+                          style: TextStyle(color: Colors.white),
                         ),
-                        color: Colors.grey[850],
+                        color: Colors.black,
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(25)),
                         onPressed: () {
