@@ -93,6 +93,9 @@ class _MainPageState extends State<MainPage> {
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
     var userData = emailToConfig[widget.email];
+//    getUserName(userName) {
+//      widget.userName = userName;
+//    }
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -404,6 +407,8 @@ class _MainPageState extends State<MainPage> {
 
   CustomScrollView myCustomScrollView() {
     final Size size = MediaQuery.of(context).size;
+    String userName = emailToName[widget.email];
+
     return CustomScrollView(
       slivers: <Widget>[
         SliverAppBar(
@@ -415,7 +420,7 @@ class _MainPageState extends State<MainPage> {
               ),
               iconSize: 20,
               onPressed: () {
-                Navigator.of(context).push(MaterialPageRoute(builder: (context) => AddConti()));
+                Navigator.of(context).push(MaterialPageRoute(builder: (context) => AddConti(name: userName)));
               },
             ),
 
