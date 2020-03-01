@@ -17,9 +17,9 @@ class _ForgetPwState extends State<ForgetPw> {
   @override
   Widget build(BuildContext context) {
     return CupertinoAlertDialog(
-      title: Text('비밀번호 찾기', style: TextStyle(color: Colors.red),),
+      title: Text('비밀번호 찾기', style: TextStyle(color: Colors.red, fontFamily: 'qn'),),
       content: Text('비밀번호를 잊어버리셨다면, 운영자에게 비밀번호 초기화 요청을 할 수 있습니다.\n'
-          '현재 운영자 : $managerEmail로 문의해주세요.', textAlign: TextAlign.start,),
+          '현재 운영자 : $managerEmail로 문의해주세요.', textAlign: TextAlign.start, style: TextStyle(fontFamily: 'qn')),
       actions: <Widget>[
         FlatButton(onPressed: (){
           print('pressed OK');

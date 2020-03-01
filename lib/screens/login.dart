@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:ui';
 //import 'dart:js';
 
 //import 'dart:html';
@@ -13,6 +14,7 @@ import 'package:firebase_auth_login_youtube/screens/main_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 //import 'package:flutter_kakao_login/flutter_kakao_login.dart';
@@ -45,6 +47,8 @@ class _AuthPageState extends State<AuthPage> {
   final double _tvHeight = 0.3;
 
   String _error;
+
+  Color _inputFormColor = Colors.transparent;
 
   Future<Null> _showForgetPwCupertinoDialog (BuildContext context) async {
     await showDialog(
@@ -109,6 +113,7 @@ class _AuthPageState extends State<AuthPage> {
       GestureDetector(
         onTap: () {
           FocusScope.of(context).requestFocus(new FocusNode());
+          _inputFormColor = Colors.transparent;
         },
         child: Scaffold(
           resizeToAvoidBottomInset: false,
@@ -164,57 +169,7 @@ class _AuthPageState extends State<AuthPage> {
                         ? Opacity(
                             opacity: value.isRejoicer ? 1 : 0,
                             child: _inputForm(size))
-                        : Padding(
-                            padding: EdgeInsets.all(size.width * 0.05),
-                            child: Opacity(
-                              opacity: 0,
-                              child: Card(
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(16),
-                                ),
-                                elevation: 10.0,
-                                child: Padding(
-                                  padding: const EdgeInsets.only(
-                                    left: 12.0,
-                                    right: 12.0,
-                                    top: 12.0,
-                                    bottom: 32.0,
-                                  ),
-                                  child: Form(
-                                      key: _guestForm,
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: <Widget>[
-                                          Text(
-                                              'Guest 모드에서는 게시글 작성 등의 기능과 열람할 수 있는 정보가 제한됩니다.',
-                                              textAlign: TextAlign.center),
-                                          Container(
-                                            height: 8,
-                                          ),
-                                          Consumer<GuestOrRejoicer>(
-                                            builder: (context, value, child) =>
-                                                Opacity(
-                                                    opacity: value.isRejoicer
-                                                        ? 1
-                                                        : 0,
-                                                    child: GestureDetector(
-                                                        onTap: value.isRejoicer
-                                                            ? () {
-                                                          CupertinoAlertDialog();
-//                                                                goToForgetPw(
-//                                                                    context);
-                                                              }
-                                                            : null,
-                                                        child: Text(
-                                                            '- 비밀번호를 잊으셨나요?'))),
-                                          ),
-                                        ],
-                                      )),
-                                ),
-                              ),
-                            ),
-                          ),
+                        : _guestMode(size),
                   ),
                   _loginButton(size),
                   _appleButton(size),
@@ -223,7 +178,7 @@ class _AuthPageState extends State<AuthPage> {
                 ],
               ),
               SizedBox(
-                height: size.height * 0.06,
+                height: size.height * 0.03,
               ),
               ShowAlert(),
               SizedBox(
@@ -288,6 +243,7 @@ class _AuthPageState extends State<AuthPage> {
           .signInWithEmailAndPassword(
               email: _idController.text, password: _passwordController.text);
       final FirebaseUser user = result.user;
+//      return _showForgetPwCupertinoDialog(context);
     } catch (e) {
       print(e);
       String ema;
@@ -354,6 +310,60 @@ class _AuthPageState extends State<AuthPage> {
     );
   }
 
+  Widget _guestMode(Size size) {
+    return Padding(
+      padding: EdgeInsets.all(size.width * 0.05),
+      child: Opacity(
+        opacity: 0,
+        child: Card(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
+          elevation: 10.0,
+          child: Padding(
+            padding: const EdgeInsets.only(
+              left: 12.0,
+              right: 12.0,
+              top: 12.0,
+              bottom: 32.0,
+            ),
+            child: Form(
+                key: _guestForm,
+                child: Column(
+                  crossAxisAlignment:
+                  CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                        'Guest 모드에서는 게시글 작성 등의 기능과 열람할 수 있는 정보가 제한됩니다.',
+                        textAlign: TextAlign.center),
+                    Container(
+                      height: 8,
+                    ),
+                    Consumer<GuestOrRejoicer>(
+                      builder: (context, value, child) =>
+                          Opacity(
+                              opacity: value.isRejoicer
+                                  ? 1
+                                  : 0,
+                              child: GestureDetector(
+                                  onTap: value.isRejoicer
+                                      ? () {
+                                    CupertinoAlertDialog();
+//                                                                goToForgetPw(
+//                                                                    context);
+                                  }
+                                      : null,
+                                  child: Text(
+                                      '- 비밀번호를 잊으셨나요?'))),
+                    ),
+                  ],
+                )),
+          ),
+        ),
+      ),
+    );
+  }
+
   Widget _inputForm(Size size) {
     return Padding(
       padding: EdgeInsets.only(
@@ -362,10 +372,11 @@ class _AuthPageState extends State<AuthPage> {
       right: size.width * 0.05,
       bottom: size.height * 0.2),
       child: Card(
+        color: _inputFormColor,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(16),
         ),
-        elevation: 10.0,
+//        elevation: 10.0,
         child: Padding(
           padding: const EdgeInsets.only(
             left: 12.0,
@@ -380,9 +391,9 @@ class _AuthPageState extends State<AuthPage> {
                 children: <Widget>[
                   TextFormField(
                     onTap: () {
+                      _inputFormColor = Colors.white;
 //                      _scrollController.jumpTo(10.0);
                     },
-                    autofocus: true,
                     keyboardType: TextInputType.emailAddress,
                     controller: _idController,
                     decoration: InputDecoration(
@@ -399,10 +410,12 @@ class _AuthPageState extends State<AuthPage> {
                   ),
                   TextFormField(
                     onTap: () {
+                      _inputFormColor = Colors.white;
 //                      _scrollController.jumpTo(10.0);
                     },
-                    keyboardType: TextInputType.visiblePassword,
                     obscureText: true,
+                    style: TextStyle(fontFamily: ''),
+                    keyboardType: TextInputType.visiblePassword,
                     controller: _passwordController,
                     decoration: InputDecoration(
                       icon: Icon(Icons.vpn_key),
@@ -509,7 +522,7 @@ class _AuthPageState extends State<AuthPage> {
                     ? RaisedButton(
                         child: AutoSizeText(
                           'Rejoice 계정으로 로그인',
-                          style: TextStyle(color: Colors.white),
+                          style: TextStyle(color: Colors.white, fontSize: 17),
                         ),
                         color: Colors.black,
                         shape: RoundedRectangleBorder(

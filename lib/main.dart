@@ -19,7 +19,9 @@ class MyApp extends StatelessWidget {
 //    KakaoContext.clientId = '9e7ef641a8dfd745d8098edab4a738e5';
     return MaterialApp(
       title: 'Rejoicer',
-      theme: ThemeData(primarySwatch: Colors.amber, fontFamily: 'qn'),
+      theme: ThemeData(primarySwatch: Colors.amber,
+          fontFamily: 'qn'
+      ),
       debugShowCheckedModeBanner: false,
       home: Splash(),
     );

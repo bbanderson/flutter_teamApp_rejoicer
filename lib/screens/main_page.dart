@@ -6,6 +6,7 @@ import 'package:firebase_auth_login_youtube/bloc/new_conti.dart';
 import 'package:firebase_auth_login_youtube/bloc/random_list.dart';
 import 'package:firebase_auth_login_youtube/bloc/saved.dart';
 import 'package:firebase_auth_login_youtube/data/profileImage.dart';
+import 'package:firebase_auth_login_youtube/screens/Conti/addConti.dart';
 import 'package:firebase_auth_login_youtube/screens/login.dart';
 import 'package:firebase_auth_login_youtube/screens/mainPage_drawer_contents/channels.dart';
 import 'package:firebase_auth_login_youtube/screens/socket/socket_chat.dart';
@@ -408,13 +409,24 @@ class _MainPageState extends State<MainPage> {
         SliverAppBar(
           actions: <Widget>[
             IconButton(
-              icon: Icon(Icons.list),
+              icon: FaIcon(
+                FontAwesomeIcons.pencilAlt,
+                color: Colors.grey[850],
+              ),
+              iconSize: 20,
               onPressed: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) =>
-                        FavoriteConti(saved: NewContiList().goToSave)));
+                Navigator.of(context).push(MaterialPageRoute(builder: (context) => AddConti()));
               },
-            )
+            ),
+
+//            IconButton(
+//              icon: Icon(Icons.list),
+//              onPressed: () {
+//                Navigator.of(context).push(MaterialPageRoute(
+//                    builder: (context) =>
+//                        FavoriteConti(saved: NewContiList().goToSave)));
+//              },
+//            )
           ],
           elevation: 0,
           automaticallyImplyLeading: true,
