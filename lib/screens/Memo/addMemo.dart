@@ -1,20 +1,20 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth_login_youtube/data/users_id.dart';
-import 'package:firebase_auth_login_youtube/screens/Conti/contiPage.dart';
+import 'package:firebase_auth_login_youtube/screens/Memo/MemoPage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-class AddConti extends StatefulWidget {
-  AddConti({this.name});
+class AddMemo extends StatefulWidget {
+  AddMemo({this.name});
 
   final String name;
 
   @override
-  _AddContiState createState() => _AddContiState();
+  _AddMemoState createState() => _AddMemoState();
 }
 
-class _AddContiState extends State<AddConti> {
+class _AddMemoState extends State<AddMemo> {
   final ScrollController _scrollController = ScrollController();
 
 
@@ -78,7 +78,7 @@ class _AddContiState extends State<AddConti> {
   }
 
   createData() {
-    DocumentReference ds = Firestore.instance.collection(ContiPage().email.toString()).document(date);
+    DocumentReference ds = Firestore.instance.collection(MemoPage().email.toString()).document(date);
     Map<String, dynamic> addConti = {
       'leaderName' : leaderName,
       'date' : date,
@@ -200,6 +200,7 @@ class _AddContiState extends State<AddConti> {
                         ),
                       ),
                       TextField(
+                        maxLines: 10,
                         onTap: (){
                           _scrollController.jumpTo(200);
                         },
@@ -207,7 +208,8 @@ class _AddContiState extends State<AddConti> {
                           getDetails(details);
                         },
                         decoration: InputDecoration(
-                          labelText: '상세설명 : ',
+                          labelText: '상세설명',
+                          labelStyle: TextStyle(),
                         ),
                       ),
                       SizedBox(

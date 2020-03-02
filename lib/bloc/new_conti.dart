@@ -51,6 +51,7 @@ class _NewContiListState extends State<NewContiList> {
     widget.goToSave = saved;
     return Scaffold(
       body: Container(
+        color: Colors.grey[600],
         child: _newContiList(),
       ),
     );
@@ -71,36 +72,75 @@ class _NewContiListState extends State<NewContiList> {
 //          _suggestions.addAll(generateWordPairs().take(10));
 //        }
 
-        return _myShowRandomList(newConti[realIndex]);
+        return _myShowRandomList(newConti[realIndex], realIndex);
       });
 
-  Widget _myShowRandomList(String song) {
+  Widget _myShowRandomList(String song, int realIndex) {
     final bool alreadySaved = saved.contains(song);
 
-    return ListTile(
-      title: Text(
-        song,
-        textScaleFactor: 1.5,
-      ),
-      trailing: Icon(
-        alreadySaved ? Icons.favorite : Icons.favorite_border,
-        color: Colors.pink,
-      ),
-      onTap: () {
-        setState(() {
-          print(song);
-          if (alreadySaved) {
-            // true
-            removeFavorite(song);
+//    Widget indexIcon(realIndex) {
+//      switch (realIndex){
+//        case 0:
+//          return Icon(Icons.looks_one);
+//          break;
+//        case 1:
+//          return Icon(Icons.looks_two);
+//          break;
+//        case 2:
+//          return Icon(Icons.looks_3);
+//          break;
+//        case 3:
+//          return Icon(Icons.looks_4);
+//          break;
+//        case 4:
+//          return Icon(Icons.looks_5);
+//          break;
+//        case 5:
+//          return Icon(Icons.looks_6);
+//          break;
+//        case 6:
+//          return Icon(Icons.filter_7);
+//          break;
+//        case 7:
+//          return Icon(Icons.filter_8);
+//          break;
+//        case 8:
+//          return Icon(Icons.filter_9);
+//          break;
+//      }
+//    }
+
+    return Container(
+      color: Colors.amber[50],
+      child: ListTile(
+        leading: Padding(
+          padding: EdgeInsets.only(top:4.0),
+          child: Text('${realIndex+1}/${newConti.length}', style: TextStyle(color: Colors.white, backgroundColor: Colors.black),),
+        ),
+        title: Text(
+          song,
+          textScaleFactor: 1.5,
+        ),
+        trailing: Icon(
+          alreadySaved ? Icons.favorite : Icons.favorite_border,
+          color: Colors.pink,
+        ),
+        onTap: () {
+          setState(() {
+            print(song);
+            if (alreadySaved) {
+              // true
+              removeFavorite(song);
 //          saved.remove(song);
-          } else {
-            // false
-            addFavorite(song);
+            } else {
+              // false
+              addFavorite(song);
 //          saved.add(song);
-          }
-          print(saved.toString());
-        });
-      },
+            }
+            print(saved.toString());
+          });
+        },
+      ),
     );
   }
 

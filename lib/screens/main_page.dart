@@ -7,11 +7,16 @@ import 'package:firebase_auth_login_youtube/bloc/new_conti.dart';
 import 'package:firebase_auth_login_youtube/bloc/random_list.dart';
 import 'package:firebase_auth_login_youtube/bloc/saved.dart';
 import 'package:firebase_auth_login_youtube/data/profileImage.dart';
-import 'package:firebase_auth_login_youtube/screens/Conti/addConti.dart';
+import 'package:firebase_auth_login_youtube/models/channel_model.dart';
+import 'package:firebase_auth_login_youtube/models/video_model.dart';
+import 'package:firebase_auth_login_youtube/screens/Memo/addMemo.dart';
+import 'package:firebase_auth_login_youtube/screens/home_screen.dart';
 import 'package:firebase_auth_login_youtube/screens/login.dart';
-import 'package:firebase_auth_login_youtube/screens/mainPage_drawer_contents/channels.dart';
-import 'package:firebase_auth_login_youtube/screens/Conti/contiPage.dart';
+import 'package:firebase_auth_login_youtube/screens/mainPage_drawer_contents/channels.dart' as d;
+import 'package:firebase_auth_login_youtube/screens/Memo/MemoPage.dart';
 import 'package:firebase_auth_login_youtube/screens/socket/socket_chat.dart';
+import 'package:firebase_auth_login_youtube/screens/video_screen.dart';
+import 'package:firebase_auth_login_youtube/services/api_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -21,7 +26,9 @@ import 'package:firebase_auth_login_youtube/main.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/fa_icon.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 import '../data/users_id.dart';
+import 'Memo/MemoPage.dart';
 
 class MainPage extends StatefulWidget {
   // MainPage 생성 시 email 을 받아오도록 한다.
@@ -38,11 +45,10 @@ class MainPage extends StatefulWidget {
 class _MainPageState extends State<MainPage> {
 //  String userName = instTeam;
 
-//  @override
-//  void init() {
-//    super.initState();
-//    String userID = email;
-//  }
+  @override
+  void initState() {
+    super.initState();
+  }
 
   Color _color = Colors.orange[200];
   Color _appBarColor = Colors.amber;
@@ -57,8 +63,13 @@ class _MainPageState extends State<MainPage> {
   Widget currentWidget = progress;
   bool isProgressed = true;
 
+
+  static Widget youTubeLink() {
+    return HomeScreen();
+  }
+
   // bottonNav 누를 때 변경 사항 저장하기 -> live, weather, chat Page
-  static List<Widget> _widgetOptions = <Widget>[
+   static List<Widget> _widgetOptions = <Widget>[
 //    Container(
 //      color: Colors.redAccent,
 //    ),
@@ -68,11 +79,7 @@ class _MainPageState extends State<MainPage> {
 //    Container(
 //      color: Colors.blueAccent,
 //    ),
-    Center(
-        child: Text(
-      'Pneuma Live',
-      textScaleFactor: 2,
-    )),
+    youTubeLink(),
     Center(
         child: Text(
       _contiDate,
@@ -100,7 +107,7 @@ class _MainPageState extends State<MainPage> {
 //    }
 
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.amber[100],
 //      appBar: AppBar(
 //        centerTitle: true,
 //        backgroundColor: _appBarColor,
@@ -257,16 +264,16 @@ class _MainPageState extends State<MainPage> {
                 ),
                 title: Text('콘티'),
                 onTap: () {
-                  setState(() async {
+                  setState(()  {
                     _color = Colors.green;
                     _appBarColor = Colors.green;
                     _appBarText = Text('콘티');
                     Navigator.of(context).pop();
-                    await Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>
-                                ContiPage()));
+//                    await Navigator.push(
+//                        context,
+//                        MaterialPageRoute(
+//                            builder: (context) =>
+//                                MemoPage()));
                   });
                   print('Conti Button is clicked.');
                 },
@@ -277,15 +284,20 @@ class _MainPageState extends State<MainPage> {
                   Icons.video_library,
                   color: Colors.grey[850],
                 ),
-                title: Text('참고영상'),
+                title: Text('YouTube'),
                 onTap: () {
-                  setState(() {
+                  setState(() async {
                     _color = Color.fromRGBO(77, 166, 255, 1);
                     _appBarColor = Color.fromRGBO(77, 166, 255, 1);
-                    _appBarText = Text('참고영상');
+                    _appBarText = Text('YouTube');
+                    await Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                HomeScreen()));
                   });
                   Navigator.of(context).pop();
-                  print('Video Button is clicked.');
+                  print('YouTube Button is clicked.');
                 },
                 // trailing: Icon(Icons.add),
               ),
@@ -294,15 +306,20 @@ class _MainPageState extends State<MainPage> {
                   Icons.import_contacts,
                   color: Colors.grey[850],
                 ),
-                title: Text('악보'),
+                title: Text('메모장'),
                 onTap: () {
-                  setState(() {
+                  setState(() async {
                     _color = Color.fromRGBO(77, 77, 255, 1);
                     _appBarColor = Color.fromRGBO(77, 77, 255, 1);
-                    _appBarText = Text('악보');
+                    _appBarText = Text('메모장');
+                    Navigator.of(context).pop();
+                    await Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                MemoPage()));
                   });
-                  Navigator.of(context).pop();
-                  print('Score Button is clicked.');
+                  print('Memo Button is clicked.');
                 },
                 // trailing: Icon(Icons.add),
               ),
@@ -321,7 +338,7 @@ class _MainPageState extends State<MainPage> {
                           context,
                           MaterialPageRoute(
                               builder: (context) =>
-                                  Channel(email: widget.email)));
+                                  d.Channel(email: widget.email)));
                     });
                     Navigator.of(context).pop();
                     print('ChannelTable Button is clicked.');
@@ -435,7 +452,7 @@ class _MainPageState extends State<MainPage> {
               iconSize: 20,
               onPressed: () {
                 Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => AddConti(name: userName)));
+                    builder: (context) => AddMemo(name: userName)));
               },
             ),
 
@@ -453,10 +470,11 @@ class _MainPageState extends State<MainPage> {
           floating: true,
           pinned: true,
           snap: false,
-          backgroundColor: Colors.white,
-          expandedHeight: size.height * 0.5,
+          backgroundColor: Colors.amber[100],
+          expandedHeight: size.height * 0.3,
 //          title: Text('d'),
           flexibleSpace: FlexibleSpaceBar(
+            background: Stack(children:<Widget>[Positioned(left: size.width * 0.15, right: size.width * 0.15, top: size.height * 0.15,child: SizedBox(width: 30, height: 30,child: Image.asset('assets/arrow_up.gif',)))],),
             title: Text(
               'Weekly Conti',
               style: TextStyle(
@@ -471,10 +489,7 @@ class _MainPageState extends State<MainPage> {
             [
               Column(
                 children: <Widget>[
-                  IndexedStack(
-                    index: _selectedIndex,
-                    children: _widgetOptions,
-                  ),
+//
                   Padding(
                     padding: const EdgeInsets.all(8.0),
 //            child: SocketChat(),
@@ -489,19 +504,10 @@ class _MainPageState extends State<MainPage> {
               Container(
                 child: Padding(
                   padding: EdgeInsets.all(30),
-                  child: (AnimatedSwitcher(
-                    duration: Duration(seconds: duration),
-                    child: currentWidget,
-                    transitionBuilder:
-                        (Widget child, Animation<double> animation) {
-                      return ScaleTransition(
-                        scale: animation,
-                        child: child,
-                      );
-                    },
-                    switchInCurve: Cubic(0.22, 0.0, 1.0, 1.0),
-                    switchOutCurve: Cubic(0.0, 0.0, 0.28, 1.0),
-                  )),
+                  child: IndexedStack(
+                    index: _selectedIndex,
+                    children: _widgetOptions,
+                  ),
                 ),
                 color: Colors.green,
                 height: 250,

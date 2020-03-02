@@ -15,6 +15,10 @@ class Channel extends StatefulWidget {
   Channel({this.email});
   final String email;
 
+  get uploadPlaylistId => null;
+
+  get videos => null;
+
   @override
   _ChannelState createState() => _ChannelState();
 }

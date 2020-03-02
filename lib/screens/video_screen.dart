@@ -1,18 +1,18 @@
-import 'package:english_words/english_words.dart';
 import 'package:flutter/material.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
-class SavedList extends StatefulWidget {
-
-  SavedList({this.id});
+class VideoScreen extends StatefulWidget {
 
   final String id;
 
+  VideoScreen({this.id});
+
   @override
-  _SavedListState createState() => _SavedListState();
+  _VideoScreenState createState() => _VideoScreenState();
 }
 
-class _SavedListState extends State<SavedList> {
+class _VideoScreenState extends State<VideoScreen> {
+
   YoutubePlayerController _controller;
 
   @override
@@ -30,9 +30,7 @@ class _SavedListState extends State<SavedList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Saved'),
-      ),
+      appBar: AppBar(),
       body: YoutubePlayer(
         controller: _controller,
         showVideoProgressIndicator: true,
@@ -43,6 +41,3 @@ class _SavedListState extends State<SavedList> {
     );
   }
 }
-
-
-

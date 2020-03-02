@@ -1,23 +1,23 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth_login_youtube/data/users_id.dart';
-import 'package:firebase_auth_login_youtube/screens/Conti/addConti.dart';
-import 'package:firebase_auth_login_youtube/screens/Conti/savedContiPage.dart';
+import 'package:firebase_auth_login_youtube/screens/Memo/addMemo.dart';
+import 'package:firebase_auth_login_youtube/screens/Memo/savedContiPage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/fa_icon.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-class ContiPage extends StatefulWidget {
+class MemoPage extends StatefulWidget {
 
-  ContiPage({this.email});
+  MemoPage({this.email});
 
   final String email;
 
   @override
-  _ContiPageState createState() => _ContiPageState();
+  _MemoPageState createState() => _MemoPageState();
 }
 
-class _ContiPageState extends State<ContiPage> {
+class _MemoPageState extends State<MemoPage> {
 
 //  GlobalKey <FormState> _favoriteConti = GlobalKey<FormState>();
 
@@ -50,21 +50,32 @@ class _ContiPageState extends State<ContiPage> {
       // ignore: missing_return
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
-          return Container(
-//            key: ValueKey(0),
-            color: Colors.amber[50],
-            child: ListTile(
-              leading: CircularProgressIndicator(
-                valueColor: AlwaysStoppedAnimation<Color>(Colors.redAccent),
+          return Scaffold(
+            body: Center(
+              child: Container(
+                height: size.height * 0.8,
+                child: Column(
+                  children: <Widget>[
+//                    Icon(Icons.error_outline, size: 50,),
+                    Container(
+                      height: 100,
+                      width: 100,
+                      child: CircularProgressIndicator(
+                        valueColor: AlwaysStoppedAnimation<Color>(Colors.redAccent),
+                      ),
+                    ),
+//                    Text('메모가 없습니다.\n + 버튼을 누르시면 새로운 메모를 생성합니다.'),
+//                    FloatingActionButton(onPressed:(){Navigator.of(context).push(MaterialPageRoute(
+//                        builder: (context) => AddMemo(name: userName)));},child: FaIcon(FontAwesomeIcons.plusSquare),),
+                  ],
+                ),
               ),
-              title: Text('잠시만 기다려주세요'),
-              subtitle: Text('loading...'),
             ),
           );
-        } else {
+        } else if (snapshot.hasData){
           return Scaffold(
             appBar: CupertinoNavigationBar(
-              middle: Text('그때 그 콘티', style: TextStyle(fontFamily: 'qn'),),
+              middle: Text('메모장', style: TextStyle(fontFamily: 'qn'),),
               trailing: IconButton(
                 onPressed: (){},
                 padding: EdgeInsets.only(left: 10),
@@ -190,7 +201,7 @@ class _ContiPageState extends State<ContiPage> {
               child: FaIcon(FontAwesomeIcons.solidHeart, color: Colors.pink,),
               onPressed: () {
                 Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => SavedConti()));
+                    builder: (context) => AddMemo(name: userName)));
               },
             ),
             floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,

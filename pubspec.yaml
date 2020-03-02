@@ -35,7 +35,7 @@ dependencies:
   auto_size_text: ^2.1.0
   firebase_storage: 3.1.1
   cloud_firestore: 0.13.4
-  youtube_player_flutter: ^6.0.3+2
+  youtube_player_flutter: ^6.1.0+4
   http: ^0.12.0+4
   json_annotation: ^3.0.1
   #  kakao_flutter_sdk: ^0.4.2
@@ -87,6 +87,7 @@ flutter:
    - assets/icons/ohr.png
    - assets/xlr_f.png
    - assets/xlr_m.png
+   - assets/arrow_up.gif
 
 
 #   - images/a_dot_ham.jpeg
