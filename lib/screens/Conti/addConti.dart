@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth_login_youtube/data/users_id.dart';
+import 'package:firebase_auth_login_youtube/screens/Conti/contiPage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -77,7 +78,7 @@ class _AddContiState extends State<AddConti> {
   }
 
   createData() {
-    DocumentReference ds = Firestore.instance.collection('rejoicer-auth').document(date);
+    DocumentReference ds = Firestore.instance.collection(ContiPage().email.toString()).document(date);
     Map<String, dynamic> addConti = {
       'leaderName' : leaderName,
       'date' : date,

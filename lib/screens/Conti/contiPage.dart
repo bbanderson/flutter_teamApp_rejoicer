@@ -19,11 +19,14 @@ class ContiPage extends StatefulWidget {
 
 class _ContiPageState extends State<ContiPage> {
 
-  Set<String> savedConti = Set<String>();
+//  GlobalKey <FormState> _favoriteConti = GlobalKey<FormState>();
+
+//  final List<ContiPage> _contiList = <ContiPage>[];
+//
+//  final Set<ContiPage> _savedConti = Set<ContiPage>();
 
   Widget HeartButton(String conti) {
 
-    final bool isSaved = savedConti.contains(conti);
 
     return ListTile(
       title: Text(conti),
@@ -40,8 +43,10 @@ class _ContiPageState extends State<ContiPage> {
 
 
 
+
+
     return StreamBuilder(
-      stream: Firestore.instance.collection('rejoicer-auth').snapshots(),
+      stream: Firestore.instance.collection(widget.email.toString()).snapshots(),
       // ignore: missing_return
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
@@ -73,6 +78,10 @@ class _ContiPageState extends State<ContiPage> {
             body: ListView.builder(
                 itemCount: snapshot.data.documents.length,
                 itemBuilder: (context, index) {
+//                  final bool isSaved = _savedConti.contains(snapshot.data.documents[index]);
+//                  setState(() {
+//                    _contiList.add(snapshot.data.documents[index]);
+//                  });
                   DocumentSnapshot contiList = snapshot.data.documents[index];
                   return Stack(
                     children: <Widget>[
@@ -92,48 +101,51 @@ class _ContiPageState extends State<ContiPage> {
                                 child: Center(
                                   child: Padding(
                                     padding: EdgeInsets.all(8),
-                                    child: Column(
-                                      children: <Widget>[
-                                        SizedBox(
-                                          height: 30,
-                                        ),
-                                        Container(
-                                          width: size.width * 0.9,
-                                          child: Card(
-                                            shape: RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(25)),
-                                            child: Container(
-                                              height: 100,
-                                              child: Center(
-                                                  child: Text(
-                                                '${contiList['date']} ${contiList['contiType']}예배',
-                                                style: TextStyle(fontSize: 25),
-                                              )),
+                                    child: Form(
+//                                      key: _favoriteConti,
+                                      child: Column(
+                                        children: <Widget>[
+                                          SizedBox(
+                                            height: 30,
+                                          ),
+                                          Container(
+                                            width: size.width * 0.9,
+                                            child: Card(
+                                              shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(25)),
+                                              child: Container(
+                                                height: 100,
+                                                child: Center(
+                                                    child: Text(
+                                                  '${contiList['date']} ${contiList['contiType']}예배',
+                                                  style: TextStyle(fontSize: 25),
+                                                )),
+                                              ),
                                             ),
                                           ),
-                                        ),
-                                        SizedBox(
-                                          height: 10,
-                                        ),
-                                        (contiList['leaderName'] != null)
-                                            ? Text(
-                                                '인도자 : ${contiList['leaderName']}')
-                                            : SizedBox(),
+                                          SizedBox(
+                                            height: 10,
+                                          ),
+                                          (contiList['leaderName'] != null)
+                                              ? Text(
+                                                  '인도자 : ${contiList['leaderName']}')
+                                              : SizedBox(),
 //                                        Container(
 //                                          width: size.width,
 //                                          height: 200,
 ////                                      child: Image.network('${contiList['image']}', fit: BoxFit.fill,),
 //                                        ),
-                                        SizedBox(
-                                          height: 10,
-                                        ),
-                                        Text('${contiList['songName']}'),
-                                        SizedBox(
-                                          height: 10,
-                                        ),
-                                        Text('${contiList['details']}'),
-                                      ],
+                                          SizedBox(
+                                            height: 10,
+                                          ),
+                                          Text('${contiList['songName']}'),
+                                          SizedBox(
+                                            height: 10,
+                                          ),
+                                          Text('${contiList['details']}'),
+                                        ],
+                                      ),
                                     ),
                                   ),
                                 ),
@@ -151,8 +163,19 @@ class _ContiPageState extends State<ContiPage> {
                           child: CircleAvatar(
                             backgroundColor: Colors.black,
                             child: IconButton(
+                              onPressed: (){
+                                setState(() {
+//                                  if(isSaved) {
+//                                    _savedConti.remove(snapshot.data.documents[index]);
+//                                  }
+//                                  else _savedConti.add(snapshot.data.documents[index]);
+//                                  print(_savedConti);
+                                });
+                              },
                               icon: Icon(
-                                Icons.favorite,
+//                                isSaved?
+//                                Icons.favorite:
+                                Icons.favorite_border,
                                 size: 20,
                                 color: Colors.pink,
                               ),
