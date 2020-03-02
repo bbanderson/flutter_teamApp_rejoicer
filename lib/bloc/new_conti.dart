@@ -51,6 +51,7 @@ class _NewContiListState extends State<NewContiList> {
     widget.goToSave = saved;
     return Scaffold(
       body: Container(
+        padding: EdgeInsets.all(10),
         color: Colors.grey[600],
         child: _newContiList(),
       ),
@@ -111,35 +112,39 @@ class _NewContiListState extends State<NewContiList> {
 //    }
 
     return Container(
-      color: Colors.amber[50],
-      child: ListTile(
-        leading: Padding(
-          padding: EdgeInsets.only(top:4.0),
-          child: Text('${realIndex+1}/${newConti.length}', style: TextStyle(color: Colors.white, backgroundColor: Colors.black),),
-        ),
-        title: Text(
-          song,
-          textScaleFactor: 1.5,
-        ),
-        trailing: Icon(
-          alreadySaved ? Icons.favorite : Icons.favorite_border,
-          color: Colors.pink,
-        ),
-        onTap: () {
-          setState(() {
-            print(song);
-            if (alreadySaved) {
-              // true
-              removeFavorite(song);
+//      color: Colors.amber[50],
+      child: Card(
+        elevation: 10,
+        color: Colors.white,
+        child: ListTile(
+          leading: Padding(
+            padding: EdgeInsets.only(top:4.0),
+            child: Card(color:Colors.black,child: Text('${realIndex+1}/${newConti.length}', style: TextStyle(fontSize:15,color: Colors.white,),)),
+          ),
+          title: Text(
+            song,
+            textScaleFactor: 1.5,
+          ),
+          trailing: Icon(
+            alreadySaved ? Icons.favorite : Icons.favorite_border,
+            color: Colors.pink,
+          ),
+          onTap: () {
+            setState(() {
+              print(song);
+              if (alreadySaved) {
+                // true
+                removeFavorite(song);
 //          saved.remove(song);
-            } else {
-              // false
-              addFavorite(song);
+              } else {
+                // false
+                addFavorite(song);
 //          saved.add(song);
-            }
-            print(saved.toString());
-          });
-        },
+              }
+              print(saved.toString());
+            });
+          },
+        ),
       ),
     );
   }

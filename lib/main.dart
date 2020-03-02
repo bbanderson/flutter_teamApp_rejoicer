@@ -9,6 +9,8 @@ import 'package:provider/provider.dart';
 //import 'package:kakao_flutter_sdk/all.dart';
 import 'screens/socket/socket_chat.dart';
 
+const URL = 'https://www.youtube.com/user/WLBBAN/featured?view_as=subscriber';
+
 void main()  {
   runApp(MyApp());
 }

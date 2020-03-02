@@ -1,4 +1,4 @@
-import 'package:firebase_auth_login_youtube/bloc/saved.dart';
+import 'package:firebase_auth_login_youtube/bloc/viewVideo.dart';
 import 'package:firebase_auth_login_youtube/models/channel_model.dart';
 import 'package:firebase_auth_login_youtube/models/video_model.dart';
 import 'package:firebase_auth_login_youtube/services/api_service.dart';
@@ -10,13 +10,15 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+
   Channel _channel;
   bool _isLoading = false;
 
   @override
   void initState() {
-    super.initState();
+
     _initChannel();
+    super.initState();
   }
 
   _initChannel() async {
@@ -86,13 +88,13 @@ class _HomeScreenState extends State<HomeScreen> {
       onTap: () => Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (_) => SavedList(id: video.id),
+          builder: (_) => ViewVideo(id: video.id),
         ),
       ),
       child: Container(
         margin: EdgeInsets.symmetric(horizontal: 20.0, vertical: 5.0),
         padding: EdgeInsets.all(10.0),
-        height: 140.0,
+        height: 240.0,
         decoration: BoxDecoration(
           color: Colors.white,
           boxShadow: [
@@ -103,22 +105,24 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ],
         ),
-        child: Row(
+        child: Column(
           children: <Widget>[
             Image(
               width: 150.0,
               image: NetworkImage(video.thumbnailUrl),
             ),
-            SizedBox(width: 10.0),
+            SizedBox(height: 15.0),
             Expanded(
               child: Text(
                 video.title,
+                textAlign: TextAlign.center,
                 style: TextStyle(
                   color: Colors.black,
                   fontSize: 18.0,
                 ),
               ),
             ),
+//            Expanded(child: Text(video.description),)
           ],
         ),
       ),
@@ -138,9 +142,10 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar: AppBar(
-        title: Text('YouTube Channel'),
+        title: Text('Rejoice Videos'),
       ),
       body: _channel != null
           ? NotificationListener<ScrollNotification>(

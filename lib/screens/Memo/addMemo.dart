@@ -1,9 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth_login_youtube/data/users_id.dart';
 import 'package:firebase_auth_login_youtube/screens/Memo/MemoPage.dart';
+import 'package:firebase_auth_login_youtube/screens/Memo/dateTimePicker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class AddMemo extends StatefulWidget {
   AddMemo({this.name});
@@ -17,8 +19,7 @@ class AddMemo extends StatefulWidget {
 class _AddMemoState extends State<AddMemo> {
   final ScrollController _scrollController = ScrollController();
 
-
-  String leaderName, date, songName, details;
+  String leaderName, date, songName, details, otherWorship;
 
   getLeaderName(leaderName) {
     this.leaderName = leaderName;
@@ -34,6 +35,10 @@ class _AddMemoState extends State<AddMemo> {
 
   getDetails(details) {
     this.details = details;
+  }
+
+  getOtherWorship(otherWorship) {
+    this.otherWorship = otherWorship;
   }
 
   int _addContiType = 0;
@@ -78,13 +83,15 @@ class _AddMemoState extends State<AddMemo> {
   }
 
   createData() {
-    DocumentReference ds = Firestore.instance.collection(MemoPage().email.toString()).document(date);
+    DocumentReference ds = Firestore.instance
+        .collection(MemoPage().email.toString())
+        .document(date);
     Map<String, dynamic> addConti = {
-      'leaderName' : leaderName,
-      'date' : date,
-      'songName' : songName,
-      'details' : details,
-      'contiType' : whichConti,
+      'leaderName': leaderName,
+      'date': date,
+      'songName': songName,
+      'details': details,
+      'contiType': whichConti,
     };
     ds.setData(addConti).whenComplete(() {
       print('New Conti is Saved.');
@@ -130,66 +137,111 @@ class _AddMemoState extends State<AddMemo> {
                         ),
                       ),
                       SizedBox(
-                        height: _height * 0.05,
+                        height: _height * 0.03,
                       ),
                       Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
                         children: <Widget>[
-                          Radio(
-                            value: 1,
-                            groupValue: _addContiType,
-                            onChanged: _handleAddContiType,
-                            activeColor: Colors.amber,
+                          Row(
+                            children: <Widget>[
+                              Radio(
+                                value: 1,
+                                groupValue: _addContiType,
+                                onChanged: _handleAddContiType,
+                                activeColor: Colors.amber,
+                              ),
+                              Text('금요철야'),
+                            ],
                           ),
-                          Text('금요철야'),
+                          Row(
+                            children: <Widget>[
+                              Radio(
+                                value: 2,
+                                groupValue: _addContiType,
+                                onChanged: _handleAddContiType,
+                                activeColor: Colors.amber,
+                              ),
+                              Text('주일5부'),
+                            ],
+                          ),
+                          Row(
+                            children: <Widget>[
+                              Radio(
+                                value: 3,
+                                groupValue: _addContiType,
+                                onChanged: _handleAddContiType,
+                                activeColor: Colors.amber,
+                              ),
+                              Text('새벽기도'),
+                            ],
+                          ),
                         ],
                       ),
                       Row(
                         children: <Widget>[
-                          Radio(
-                            value: 2,
-                            groupValue: _addContiType,
-                            onChanged: _handleAddContiType,
-                            activeColor: Colors.amber,
+                          Row(
+                            children: <Widget>[
+                              Radio(
+                                value: 4,
+                                groupValue: _addContiType,
+                                onChanged: _handleAddContiType,
+                                activeColor: Colors.amber,
+                              ),
+                              Text('수련회!'),
+                            ],
                           ),
-                          Text('주일5부'),
+                          Row(
+                            children: <Widget>[
+                              Radio(
+                                value: 5,
+                                groupValue: _addContiType,
+                                onChanged: _handleAddContiType,
+                                activeColor: Colors.amber,
+                              ),
+                              Text('프뉴마데이'),
+                            ],
+                          ),
+                          Row(
+                            children: <Widget>[
+                              Radio(
+                                value: 6,
+                                groupValue: _addContiType,
+                                onChanged: _handleAddContiType,
+                                activeColor: Colors.amber,
+                              ),
+                              Text('기타'),
+                            ],
+                          ),
                         ],
                       ),
-                      Row(
-                        children: <Widget>[
-                          Radio(
-                            value: 3,
-                            groupValue: _addContiType,
-                            onChanged: _handleAddContiType,
-                            activeColor: Colors.amber,
-                          ),
-                          Text('수련회'),
-                        ],
-                      ),
-                      Row(
-                        children: <Widget>[
-                          Radio(
-                            value: 4,
-                            groupValue: _addContiType,
-                            onChanged: _handleAddContiType,
-                            activeColor: Colors.amber,
-                          ),
-                          Text('기타'),
-                        ],
-                      ),
+
                       Text('인도자 : ${widget.name}'),
-                      TextField(
-                        onTap: (){
-                          _scrollController.jumpTo(50);
-                        },
-                        onChanged: (String date) {
-                          getDate(date);
-                        },
-                        decoration: InputDecoration(
-                          labelText: '언제인가요?',
+
+                      Row(children: <Widget>[
+                        SizedBox(width: _width * 0.2, child: Text('언제인가요?')),
+                        SizedBox(width: _width * 0.5,
+                          child: Text((dateTime == null)
+                              ? '날짜를 선택해주세요!'
+                              : dateTime.toString()),
                         ),
-                      ),
+                        IconButton(icon: FaIcon(FontAwesomeIcons.calendar),
+                            onPressed: () {
+                          showDatePicker(
+                              context: context,
+                              initialDate: dateTime==null?DateTime.now():dateTime,
+                              firstDate: DateTime(2020),
+                              lastDate: DateTime(2220))
+                              .then((date) {
+                            setState(() {
+                              dateTime = date;
+                            });
+                          });
+                        }),
+                      ],),
+
+
                       TextField(
-                        onTap: (){
+                        onTap: () {
                           _scrollController.jumpTo(100);
                         },
                         onChanged: (String songName) {
@@ -200,9 +252,64 @@ class _AddMemoState extends State<AddMemo> {
                         ),
                       ),
                       TextField(
-                        maxLines: 10,
-                        onTap: (){
+                        onTap: () {
                           _scrollController.jumpTo(200);
+                        },
+                        onChanged: (String songName) {
+                          getSongName(songName);
+                        },
+                        decoration: InputDecoration(
+                          labelText: '곡 : ',
+                        ),
+                      ),
+                      TextField(
+                        onTap: () {
+                          _scrollController.jumpTo(300);
+                        },
+                        onChanged: (String songName) {
+                          getSongName(songName);
+                        },
+                        decoration: InputDecoration(
+                          labelText: '곡 : ',
+                        ),
+                      ),
+                      TextField(
+                        onTap: () {
+                          _scrollController.jumpTo(400);
+                        },
+                        onChanged: (String songName) {
+                          getSongName(songName);
+                        },
+                        decoration: InputDecoration(
+                          labelText: '곡 : ',
+                        ),
+                      ),
+                      TextField(
+                        onTap: () {
+                          _scrollController.jumpTo(500);
+                        },
+                        onChanged: (String songName) {
+                          getSongName(songName);
+                        },
+                        decoration: InputDecoration(
+                          labelText: '곡 : ',
+                        ),
+                      ),
+                      TextField(
+                        onTap: () {
+                          _scrollController.jumpTo(600);
+                        },
+                        onChanged: (String songName) {
+                          getSongName(songName);
+                        },
+                        decoration: InputDecoration(
+                          labelText: '곡 : ',
+                        ),
+                      ),
+                      TextField(
+                        maxLines: 10,
+                        onTap: () {
+                          _scrollController.jumpTo(650);
                         },
                         onChanged: (String details) {
                           getDetails(details);
@@ -215,9 +322,23 @@ class _AddMemoState extends State<AddMemo> {
                       SizedBox(
                         height: 10,
                       ),
-                      RaisedButton(child: Text('돌아가기'), color: Colors.grey, onPressed: () {Navigator.of(context).pop(context);}),
-                      RaisedButton(child: Text('공지하기'), color: Colors.amber, onPressed: () {createData();},),
-                      SizedBox(height: 500,),
+                      RaisedButton(
+                          child: Text('돌아가기'),
+                          color: Colors.grey,
+                          onPressed: () {
+                            Navigator.of(context).pop(context);
+                          }),
+                      RaisedButton(
+                        child: Text('공지하기'),
+                        color: Colors.amber,
+                        onPressed: () {
+                          createData();
+                          Navigator.of(context).pop(context);
+                        },
+                      ),
+                      SizedBox(
+                        height: 300,
+                      ),
                     ],
                   ),
                 ),

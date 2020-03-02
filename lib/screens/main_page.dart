@@ -5,7 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_auth_login_youtube/bloc/favoriteConti.dart';
 import 'package:firebase_auth_login_youtube/bloc/new_conti.dart';
 import 'package:firebase_auth_login_youtube/bloc/random_list.dart';
-import 'package:firebase_auth_login_youtube/bloc/saved.dart';
+import 'package:firebase_auth_login_youtube/bloc/viewVideo.dart';
 import 'package:firebase_auth_login_youtube/data/profileImage.dart';
 import 'package:firebase_auth_login_youtube/models/channel_model.dart';
 import 'package:firebase_auth_login_youtube/models/video_model.dart';
@@ -20,7 +20,7 @@ import 'package:firebase_auth_login_youtube/services/api_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-
+import 'package:firebase_auth_login_youtube/main.dart';
 //import 'package:fluttertoast/fluttertoast.dart';
 import 'package:firebase_auth_login_youtube/main.dart';
 import 'package:flutter/services.dart';
@@ -446,7 +446,7 @@ class _MainPageState extends State<MainPage> {
           actions: <Widget>[
             IconButton(
               icon: FaIcon(
-                FontAwesomeIcons.plusSquare,
+                FontAwesomeIcons.edit,
                 color: Colors.grey[850],
               ),
               iconSize: 20,
@@ -465,16 +465,16 @@ class _MainPageState extends State<MainPage> {
 //              },
 //            )
           ],
-          elevation: 0,
+          elevation: 30,
           automaticallyImplyLeading: true,
           floating: true,
           pinned: true,
           snap: false,
           backgroundColor: Colors.amber[100],
-          expandedHeight: size.height * 0.3,
+          expandedHeight: size.height * 0.2,
 //          title: Text('d'),
           flexibleSpace: FlexibleSpaceBar(
-            background: Stack(children:<Widget>[Positioned(left: size.width * 0.15, right: size.width * 0.15, top: size.height * 0.15,child: SizedBox(width: 30, height: 30,child: Image.asset('assets/arrow_up.gif',)))],),
+            background: Stack(children:<Widget>[Positioned(left: size.width * 0.15, right: size.width * 0.15, top: size.height * 0.1,child: SizedBox(width: 30, height: 30,child: Image.asset('assets/arrow_up.gif',)))],),
             title: Text(
               'Weekly Conti',
               style: TextStyle(
