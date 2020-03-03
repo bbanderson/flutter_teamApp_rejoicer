@@ -2,17 +2,17 @@ import 'package:firebase_auth_login_youtube/bloc/conti/model/contiModel.dart';
 
 enum EventType { add, delete }
 
-class FoodEvent {
+class AddContiEvent {
   Songs song;
   int songIndex;
   EventType eventType;
 
-  FoodEvent.add(Songs song) {
+  AddContiEvent.add(Songs song) {
     this.eventType = EventType.add;
     this.song = song;
   }
 
-  FoodEvent.delete(int index) {
+  AddContiEvent.delete(int index) {
     this.eventType = EventType.delete;
     this.songIndex = index;
   }

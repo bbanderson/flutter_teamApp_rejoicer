@@ -1,7 +1,9 @@
 class Songs {
   String name;
+  String key;
 
-  Songs(String name) {
+  Songs(String name, String key) {
     this.name = name;
+    this.key = key;
   }
 }
