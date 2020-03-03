@@ -5,6 +5,7 @@ import 'package:firebase_auth_login_youtube/screens/Memo/dateTimePicker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class AddMemo extends StatefulWidget {
@@ -20,6 +21,7 @@ class _AddMemoState extends State<AddMemo> {
   final ScrollController _scrollController = ScrollController();
 
   String leaderName, date, songName, details, otherWorship;
+  List songList;
 
   getLeaderName(leaderName) {
     this.leaderName = leaderName;
@@ -55,10 +57,17 @@ class _AddMemoState extends State<AddMemo> {
           whichConti = '주일5부';
           break;
         case 3:
-          whichConti = '수련회';
+          whichConti = '새벽기도';
           break;
         case 4:
+          whichConti = '수련회';
+          break;
+        case 5:
+          whichConti = '프뉴마데이';
+          break;
+        case 6:
           whichConti = '기타';
+          break;
       }
     });
   }
@@ -139,7 +148,9 @@ class _AddMemoState extends State<AddMemo> {
                       SizedBox(
                         height: _height * 0.03,
                       ),
-                      Row(
+                      Row(children:<Widget>[
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: <Widget>[
                           Row(
@@ -164,6 +175,12 @@ class _AddMemoState extends State<AddMemo> {
                               Text('주일5부'),
                             ],
                           ),
+                        ],
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: <Widget>[
                           Row(
                             children: <Widget>[
                               Radio(
@@ -175,10 +192,6 @@ class _AddMemoState extends State<AddMemo> {
                               Text('새벽기도'),
                             ],
                           ),
-                        ],
-                      ),
-                      Row(
-                        children: <Widget>[
                           Row(
                             children: <Widget>[
                               Radio(
@@ -187,35 +200,41 @@ class _AddMemoState extends State<AddMemo> {
                                 onChanged: _handleAddContiType,
                                 activeColor: Colors.amber,
                               ),
-                              Text('수련회!'),
+                              Text('수련회'),
                             ],
                           ),
-                          Row(
-                            children: <Widget>[
-                              Radio(
-                                value: 5,
-                                groupValue: _addContiType,
-                                onChanged: _handleAddContiType,
-                                activeColor: Colors.amber,
-                              ),
-                              Text('프뉴마데이'),
-                            ],
-                          ),
-                          Row(
-                            children: <Widget>[
-                              Radio(
-                                value: 6,
-                                groupValue: _addContiType,
-                                onChanged: _handleAddContiType,
-                                activeColor: Colors.amber,
-                              ),
-                              Text('기타'),
-                            ],
-                          ),
+
                         ],
                       ),
-
-                      Text('인도자 : ${widget.name}'),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                        Row(
+                          children: <Widget>[
+                            Radio(
+                              value: 5,
+                              groupValue: _addContiType,
+                              onChanged: _handleAddContiType,
+                              activeColor: Colors.amber,
+                            ),
+                            Text('프뉴마\n데이'),
+                          ],
+                        ),
+                        Row(
+                          children: <Widget>[
+                            Radio(
+                              value: 6,
+                              groupValue: _addContiType,
+                              onChanged: _handleAddContiType,
+                              activeColor: Colors.amber,
+                            ),
+                            Text('기타'),
+                          ],
+                        ),
+                      ],),
+])
+                      ,Text('인도자 : ${widget.name}'),
 
                       Row(children: <Widget>[
                         SizedBox(width: _width * 0.2, child: Text('언제인가요?')),
@@ -246,68 +265,73 @@ class _AddMemoState extends State<AddMemo> {
                         },
                         onChanged: (String songName) {
                           getSongName(songName);
+                          BlocProvider.of<FoodBloc>(context).add(
+                            FoodEvent.add(
+                              Food(_foodname),
+                            ),
+                          ),
                         },
                         decoration: InputDecoration(
                           labelText: '곡 : ',
                         ),
                       ),
+//                      TextField(
+//                        onTap: () {
+//                          _scrollController.jumpTo(200);
+//                        },
+//                        onChanged: (String songName) {
+//                          getSongName(songName);
+//                        },
+//                        decoration: InputDecoration(
+//                          labelText: '곡 : ',
+//                        ),
+//                      ),
+//                      TextField(
+//                        onTap: () {
+//                          _scrollController.jumpTo(300);
+//                        },
+//                        onChanged: (String songName) {
+//                          getSongName(songName);
+//                        },
+//                        decoration: InputDecoration(
+//                          labelText: '곡 : ',
+//                        ),
+//                      ),
+//                      TextField(
+//                        onTap: () {
+//                          _scrollController.jumpTo(400);
+//                        },
+//                        onChanged: (String songName) {
+//                          getSongName(songName);
+//                        },
+//                        decoration: InputDecoration(
+//                          labelText: '곡 : ',
+//                        ),
+//                      ),
+//                      TextField(
+//                        onTap: () {
+//                          _scrollController.jumpTo(500);
+//                        },
+//                        onChanged: (String songName) {
+//                          getSongName(songName);
+//                        },
+//                        decoration: InputDecoration(
+//                          labelText: '곡 : ',
+//                        ),
+//                      ),
+//                      TextField(
+//                        onTap: () {
+//                          _scrollController.jumpTo(600);
+//                        },
+//                        onChanged: (String songName) {
+//                          getSongName(songName);
+//                        },
+//                        decoration: InputDecoration(
+//                          labelText: '곡 : ',
+//                        ),
+//                      ),
                       TextField(
-                        onTap: () {
-                          _scrollController.jumpTo(200);
-                        },
-                        onChanged: (String songName) {
-                          getSongName(songName);
-                        },
-                        decoration: InputDecoration(
-                          labelText: '곡 : ',
-                        ),
-                      ),
-                      TextField(
-                        onTap: () {
-                          _scrollController.jumpTo(300);
-                        },
-                        onChanged: (String songName) {
-                          getSongName(songName);
-                        },
-                        decoration: InputDecoration(
-                          labelText: '곡 : ',
-                        ),
-                      ),
-                      TextField(
-                        onTap: () {
-                          _scrollController.jumpTo(400);
-                        },
-                        onChanged: (String songName) {
-                          getSongName(songName);
-                        },
-                        decoration: InputDecoration(
-                          labelText: '곡 : ',
-                        ),
-                      ),
-                      TextField(
-                        onTap: () {
-                          _scrollController.jumpTo(500);
-                        },
-                        onChanged: (String songName) {
-                          getSongName(songName);
-                        },
-                        decoration: InputDecoration(
-                          labelText: '곡 : ',
-                        ),
-                      ),
-                      TextField(
-                        onTap: () {
-                          _scrollController.jumpTo(600);
-                        },
-                        onChanged: (String songName) {
-                          getSongName(songName);
-                        },
-                        decoration: InputDecoration(
-                          labelText: '곡 : ',
-                        ),
-                      ),
-                      TextField(
-                        maxLines: 10,
+                        maxLines: 30,
                         onTap: () {
                           _scrollController.jumpTo(650);
                         },
@@ -323,12 +347,6 @@ class _AddMemoState extends State<AddMemo> {
                         height: 10,
                       ),
                       RaisedButton(
-                          child: Text('돌아가기'),
-                          color: Colors.grey,
-                          onPressed: () {
-                            Navigator.of(context).pop(context);
-                          }),
-                      RaisedButton(
                         child: Text('공지하기'),
                         color: Colors.amber,
                         onPressed: () {
@@ -336,9 +354,15 @@ class _AddMemoState extends State<AddMemo> {
                           Navigator.of(context).pop(context);
                         },
                       ),
-                      SizedBox(
-                        height: 300,
-                      ),
+                      RaisedButton(
+                          child: Text('돌아가기'),
+                          color: Colors.grey,
+                          onPressed: () {
+                            Navigator.of(context).pop(context);
+                          }),
+//                      SizedBox(
+//                        height: 300,
+//                      ),
                     ],
                   ),
                 ),
