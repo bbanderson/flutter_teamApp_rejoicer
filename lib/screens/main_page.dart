@@ -2,6 +2,7 @@ import 'dart:ui';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:english_words/english_words.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_auth_login_youtube/bloc/conti/songList.dart';
 import 'package:firebase_auth_login_youtube/bloc/favoriteConti.dart';
 import 'package:firebase_auth_login_youtube/bloc/new_conti.dart';
 import 'package:firebase_auth_login_youtube/bloc/random_list.dart';
@@ -312,12 +313,12 @@ class _MainPageState extends State<MainPage> {
                     _color = Color.fromRGBO(77, 77, 255, 1);
                     _appBarColor = Color.fromRGBO(77, 77, 255, 1);
                     _appBarText = Text('메모장');
-                    Navigator.of(context).pop();
-                    await Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>
-                                MemoPage()));
+//                    Navigator.of(context).pop();
+//                    await Navigator.push(
+//                        context,
+//                        MaterialPageRoute(
+//                            builder: (context) =>
+//                                MemoPage()));
                   });
                   print('Memo Button is clicked.');
                 },
@@ -476,7 +477,7 @@ class _MainPageState extends State<MainPage> {
           flexibleSpace: FlexibleSpaceBar(
             background: Stack(children:<Widget>[Positioned(left: size.width * 0.15, right: size.width * 0.15, top: size.height * 0.1,child: SizedBox(width: 30, height: 30,child: Image.asset('assets/arrow_up.gif',)))],),
             title: Text(
-              'Weekly Conti',
+              '업로드된 콘티',
               style: TextStyle(
                 letterSpacing: 3,
               ),
@@ -491,67 +492,67 @@ class _MainPageState extends State<MainPage> {
                 children: <Widget>[
 //
                   Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.all(15.0),
 //            child: SocketChat(),
                   ),
                 ],
               ),
               Container(
                 color: Colors.amber,
-                height: size.height * 0.5,
-                child: NewContiList(),
+                height: size.height * 0.8,
+                child: ContiList(),
               ),
-              Container(
-                child: Padding(
-                  padding: EdgeInsets.all(30),
-                  child: IndexedStack(
-                    index: _selectedIndex,
-                    children: _widgetOptions,
-                  ),
-                ),
-                color: Colors.green,
-                height: 250,
-              ),
-              Container(
-                child: Padding(
-                  padding: EdgeInsets.all(30),
-                  child: (AnimatedSwitcher(
-                    duration: Duration(seconds: duration),
-                    child: currentWidget,
-                    transitionBuilder:
-                        (Widget child, Animation<double> animation) {
-                      return ScaleTransition(
-                        scale: animation,
-                        child: child,
-                      );
-                    },
-                    switchInCurve: Cubic(0.22, 0.0, 1.0, 1.0),
-                    switchOutCurve: Cubic(0.0, 0.0, 0.28, 1.0),
-                  )),
-                ),
-                color: Colors.blue,
-                height: 250,
-              ),
-              Container(
-                child: Padding(
-                  padding: EdgeInsets.all(30),
-                  child: (AnimatedSwitcher(
-                    duration: Duration(seconds: duration),
-                    child: currentWidget,
-                    transitionBuilder:
-                        (Widget child, Animation<double> animation) {
-                      return ScaleTransition(
-                        scale: animation,
-                        child: child,
-                      );
-                    },
-                    switchInCurve: Cubic(0.22, 0.0, 1.0, 1.0),
-                    switchOutCurve: Cubic(0.0, 0.0, 0.28, 1.0),
-                  )),
-                ),
-                color: Colors.black,
-                height: 250,
-              ),
+//              Container(
+//                child: Padding(
+//                  padding: EdgeInsets.all(30),
+//                  child: IndexedStack(
+//                    index: _selectedIndex,
+//                    children: _widgetOptions,
+//                  ),
+//                ),
+//                color: Colors.green,
+//                height: 250,
+//              ),
+//              Container(
+//                child: Padding(
+//                  padding: EdgeInsets.all(30),
+//                  child: (AnimatedSwitcher(
+//                    duration: Duration(seconds: duration),
+//                    child: currentWidget,
+//                    transitionBuilder:
+//                        (Widget child, Animation<double> animation) {
+//                      return ScaleTransition(
+//                        scale: animation,
+//                        child: child,
+//                      );
+//                    },
+//                    switchInCurve: Cubic(0.22, 0.0, 1.0, 1.0),
+//                    switchOutCurve: Cubic(0.0, 0.0, 0.28, 1.0),
+//                  )),
+//                ),
+//                color: Colors.blue,
+//                height: 250,
+//              ),
+//              Container(
+//                child: Padding(
+//                  padding: EdgeInsets.all(30),
+//                  child: (AnimatedSwitcher(
+//                    duration: Duration(seconds: duration),
+//                    child: currentWidget,
+//                    transitionBuilder:
+//                        (Widget child, Animation<double> animation) {
+//                      return ScaleTransition(
+//                        scale: animation,
+//                        child: child,
+//                      );
+//                    },
+//                    switchInCurve: Cubic(0.22, 0.0, 1.0, 1.0),
+//                    switchOutCurve: Cubic(0.0, 0.0, 0.28, 1.0),
+//                  )),
+//                ),
+//                color: Colors.black,
+//                height: 250,
+//              ),
             ],
           ),
         ),

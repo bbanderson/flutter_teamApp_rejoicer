@@ -74,18 +74,18 @@ class _MemoPageState extends State<MemoPage> {
           );
         } else if (snapshot.hasData){
           return Scaffold(
-            appBar: CupertinoNavigationBar(
-              middle: Text('메모장', style: TextStyle(fontFamily: 'qn'),),
-              trailing: IconButton(
-                onPressed: (){},
-                padding: EdgeInsets.only(left: 10),
-                icon: FaIcon(
-                  FontAwesomeIcons.search,
-                  color: Colors.grey[850],
-                ),
-                iconSize: 20,
-              ),
-            ),
+//            appBar: CupertinoNavigationBar(
+//////              middle: Text('메모장', style: TextStyle(fontFamily: 'qn'),),
+////              trailing: IconButton(
+////                onPressed: (){},
+////                padding: EdgeInsets.only(left: 10),
+////                icon: FaIcon(
+////                  FontAwesomeIcons.search,
+////                  color: Colors.grey[850],
+////                ),
+////                iconSize: 20,
+////              ),
+//            ),
             body: ListView.builder(
                 itemCount: snapshot.data.documents.length,
                 itemBuilder: (context, index) {
@@ -129,7 +129,7 @@ class _MemoPageState extends State<MemoPage> {
                                                 height: 100,
                                                 child: Center(
                                                     child: Text(
-                                                  '${contiList['date']} ${contiList['contiType']}예배',
+                                                  '${contiList['date']}\n${contiList['contiType']}예배',
                                                   style: TextStyle(fontSize: 25),
                                                 )),
                                               ),
@@ -198,13 +198,13 @@ class _MemoPageState extends State<MemoPage> {
                   );
                 }),
             floatingActionButton: FloatingActionButton(
-              child: FaIcon(FontAwesomeIcons.solidHeart, color: Colors.pink,),
+              child: FaIcon(FontAwesomeIcons.search, color: Colors.pink,),
               onPressed: () {
                 Navigator.of(context).push(MaterialPageRoute(
                     builder: (context) => AddMemo(name: userName)));
               },
             ),
-            floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+            floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
           );
         }
       },

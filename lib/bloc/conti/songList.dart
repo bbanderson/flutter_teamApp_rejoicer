@@ -37,11 +37,12 @@ class ContiList extends StatelessWidget {
                 return Card(
                   color: Colors.amber[200],
                   child: ListTile(
-                    trailing: FaIcon(FontAwesomeIcons.minusCircle, size: 15,),
+                    trailing: IconButton(
+                      onPressed: () => BlocProvider.of<AddContiBloc>(context).add(
+                        AddContiEvent.delete(index),
+                      ) ,
+                        icon: FaIcon(FontAwesomeIcons.minusCircle, size: 15,)),
                     title: Text('${songList[index].key}. ${songList[index].name}'),
-                    onTap: () => BlocProvider.of<AddContiBloc>(context).add(
-                      AddContiEvent.delete(index),
-                    ),
                   ),
                 );
               },

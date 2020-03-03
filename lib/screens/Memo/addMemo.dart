@@ -30,6 +30,8 @@ class _AddMemoState extends State<AddMemo> {
 
   String leaderName, date, songName, details, otherWorship;
 
+  String _dateTime, __dateTime;
+
   int songKeyIndex;
 
   List<String> keys = [
@@ -126,8 +128,8 @@ class _AddMemoState extends State<AddMemo> {
         .collection(MemoPage().email.toString())
         .document(date);
     Map<String, dynamic> addConti = {
-      'leaderName': leaderName,
-      'date': date,
+      'leaderName': widget.name,
+      'date': __dateTime,
       'songName': songName,
       'details': details,
       'contiType': whichConti,
@@ -284,7 +286,7 @@ class _AddMemoState extends State<AddMemo> {
                                     width: _width * 0.5,
                                     child: Text((dateTime == null)
                                         ? '(날짜를 선택해주세요!)'
-                                        : dateTime.toString()+dateTime.toString()[0] +
+                                        : dateTime.toString()[0] +
                                         dateTime.toString()[1] +
                                         dateTime.toString()[2] +
                                         dateTime.toString()[3] +'년 '+
@@ -306,6 +308,15 @@ class _AddMemoState extends State<AddMemo> {
                                             .then((date) {
                                           setState(() {
                                             dateTime = date;
+                                            _dateTime = dateTime.toString();
+                                            __dateTime = _dateTime.toString()[0] +
+                                                _dateTime.toString()[1] +
+                                                _dateTime.toString()[2] +
+                                                _dateTime.toString()[3] +'년 '+
+                                                _dateTime.toString()[5] +
+                                                _dateTime.toString()[6] +'월 '+
+                                                _dateTime.toString()[8] +
+                                                _dateTime.toString()[9] +'일';
 //                                            String ds = dateTime.toString();
 //                                            _1 = ds[0];
 //                                            _2 = ds[1];
@@ -642,6 +653,7 @@ class _AddMemoState extends State<AddMemo> {
               child: Icon(Icons.save),
               onPressed: () {
                 setState(() {
+                  createData();
 //                  songList['leaderName'] = leaderName;
 //                  songList['date'] = _date;
 //                  songList['contiType'] = _whichConti;
